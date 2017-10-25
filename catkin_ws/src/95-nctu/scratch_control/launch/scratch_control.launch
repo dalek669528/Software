@@ -8,10 +8,10 @@
 
     <include file="$(find duckietown)/machines"/>
     <!-- scratch -->
-    <node ns="$(arg veh)" if="$(arg local)" pkg="scratch" type="scratch_control_node" name="scratch" output="screen">
+    <node ns="$(arg veh)" if="$(arg local)" pkg="joy" type="joy_node" name="scratch" output="screen">
         <rosparam command="load" file="$(find duckietown)/config/$(arg config)/joy/joy_node/$(arg param_file_name).yaml"/>
     </node>
-    <node ns="$(arg veh)" unless="$(arg local)" machine="$(arg veh)" pkg="scratch" type="scratch_control_node" name="scratch" output="screen">
+    <node ns="$(arg veh)" unless="$(arg local)" machine="$(arg veh)" pkg="joy" type="joy_node" name="scratch" output="screen">
         <rosparam command="load" file="$(find duckietown)/config/$(arg config)/joy/joy_node/$(arg param_file_name).yaml"/>
     </node>
 

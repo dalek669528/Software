@@ -80,7 +80,7 @@ class ScratchMapper(object):
             car_cmd_msg.omega = self.joy.axes[3] * self.omega_gain
         self.pub_car_cmd.publish(car_cmd_msg)
 
-    def publishControlForScratch(self)
+    def publishControlForScratch(self):
         car_cmd_msg = Twist2DStamped()
         car_cmd_msg.header.stamp = self.joy.header.stamp
         car_cmd_msg.v = self.scratch_axes[1] * self.v_gain #Left stick V-axis. Up is positive
