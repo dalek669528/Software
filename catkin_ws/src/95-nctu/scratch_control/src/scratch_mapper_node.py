@@ -70,12 +70,10 @@ class JoyMapper(object):
 
     def cbScratch_x(self, scratch_msg):
         self.scratch_axes_x = scratch_msg.data
-        rospy.loginfo('cbScracch_x')
         self.publishControlForScratch()
 
     def cbScratch_y(self, scratch_msg):
         self.scratch_axes_y = scratch_msg.data
-        rospy.loginfo('cbScracch_y')
         self.publishControlForScratch()
 
     def publishControl(self):
