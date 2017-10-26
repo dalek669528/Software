@@ -1,6 +1,6 @@
 <launch>
 	<arg name="pkg_name" value="scratch_control"/>
-	<arg name="node_name" default="scratch_mapper_node"/>
+	<arg name="node_name" default="scratch_connecter_node"/>
 		
 	<arg name="veh" doc="Name of vehicle. ex: megaman"/>
 	<arg name="local" default="false" doc="true for running on laptop. false for running on vehicle."/>
@@ -9,13 +9,11 @@
 
 	<!-- Run on local (laptop) -->
 	<node if="$(arg local)" ns="$(arg veh)" pkg="$(arg pkg_name)" type="$(arg node_name).py" name="$(arg node_name)" output="screen" clear_params="true" required="true">
-		<rosparam command="load" file="$(find duckietown)/config/$(arg config)/joy_mapper/joy_mapper_node/$(arg param_file_name).yaml"/>
 	</node>
 
 	<!-- Run on remote (vehicle) -->
 	<include unless="$(arg local)" file="$(find duckietown)/machines"/>
 	<node unless="$(arg local)" ns="$(arg veh)" machine="$(arg veh)" pkg="$(arg pkg_name)" type="$(arg node_name).py" name="$(arg node_name)" output="screen" clear_params="true" required="true">
-		<rosparam command="load" file="$(find duckietown)/config/$(arg config)/joy_mapper/joy_mapper_node/$(arg param_file_name).yaml"/>
 	</node>	
 
 	<!-- Subscribe Topics -->
