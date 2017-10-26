@@ -67,16 +67,16 @@ if __name__ == '__main__':
         pub_msg.publish(msg_str)
 
         if(msg_str == "broadcast \"go\""):
-            print "go"
+            #print "go"
             pub_axes[0].publish(4.0)
         if(msg_str == "broadcast \"back\""):
-            print "back"
+            #print "back"
             pub_axes[0].publish(-4.0)
         if(msg_str == "broadcast \"right\""):
-            print "right"
+            #print "right"
             pub_axes[1].publish(4.0)
         if(msg_str == "broadcast \"left\""):
-            print "left"
+            #print "left"
             pub_axes[1].publish(-4.0)
 
             
