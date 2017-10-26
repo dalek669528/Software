@@ -151,6 +151,7 @@ class ScratchMapper(object):
 
 
 if __name__ == "__main__":
+    print "\n\n\n\nysyssssysysys\n\n0000000000000000000000000\n\n\n\n"
     rospy.init_node("scratch_mapper",anonymous=False)
     scratch_mapper = ScratchMapper()
     rospy.spin()
