@@ -4,7 +4,7 @@ import math
 
 from duckietown_msgs.msg import Twist2DStamped, BoolStamped
 from sensor_msgs.msg import Joy
-
+from std_msgs.msg import Float32
 from __builtin__ import True
 
 class JoyMapper(object):
@@ -33,6 +33,7 @@ class JoyMapper(object):
 
         # Subscriptions
         self.sub_joy_ = rospy.Subscriber("joy", Joy, self.cbJoy, queue_size=1)
+        self.sub_scratch = rospy.Subscriber("scratch_msg", Float32, self.cbScratch, queue_size=1)
         
         # timer
         # self.pub_timer = rospy.Timer(rospy.Duration.from_sec(self.pub_timestep),self.publishControl)
@@ -61,6 +62,10 @@ class JoyMapper(object):
         self.joy = joy_msg
         self.publishControl()
         self.processButtons(joy_msg)
+
+    def cbScratch(self, scratch_msg):
+        self.scratch_axes = scratch_msg
+        #self.publishControlForScratch()
 
     def publishControl(self):
         car_cmd_msg = Twist2DStamped()
