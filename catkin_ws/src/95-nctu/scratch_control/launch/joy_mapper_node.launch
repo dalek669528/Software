@@ -22,4 +22,4 @@
 	<!-- "joy": sensor_msgs/Joy. The command read from joystick -->
 	<!-- Publish Topics -->
 	<!-- "~wheels_cmd": duckietown_msgs/WheelsCmd. Wheels command for duckiebot -->
-</launch>S
+</launch>
