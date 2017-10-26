@@ -10,6 +10,7 @@ import rospy
 import roslib
 import re
 from std_msgs.msg import Float32
+from std_msgs.msg import Int16
 from std_msgs.msg import String
 
 # from scratch_control.msg import ScratchAxes
@@ -64,15 +65,18 @@ if __name__ == '__main__':
             rospy.logerr("-E- ERROR - message length differs from sent length.  (%d vs %d)" % (msg_len, len(msg_str)))
             
         pub_msg.publish(msg_str)
-        print("find: %d" % msg_str.find('sensor-update "servo'))
-        if(msg_str.find('sensor-update "servo') == 0):
-            rospy.loginfo('-D- found sensor update')
-            r = re.compile('servo(\d+)"\s+(\d+)')
-            m = r.search(msg_str)
-            servo_no = int(m.group(1))
-            servo_val = int(m.group(2))
-            if(servo_no > 0 and servo_no <= 10):
-                pub_servo[servo_no-1].publish(servo_val)
-            else:
-                rospy.logerr("-E- servo %s out of range" % servo_no)
+
+        if(msg_str == "broadcast \"go\""):
+            print "go"
+            pub_axes[0].publish(4.0)
+        if(msg_str == "broadcast \"back\""):
+            print "back"
+            pub_axes[0].publish(-4.0)
+        if(msg_str == "broadcast \"right\""):
+            print "right"
+            pub_axes[1].publish(4.0)
+        if(msg_str == "broadcast \"left\""):
+            print "left"
+            pub_axes[1].publish(-4.0)
+
             
