@@ -9,8 +9,10 @@ import sys
 import rospy
 import roslib
 import re
-from std_msgs.msg import Int16
+from std_msgs.msg import Float32
 from std_msgs.msg import String
+
+# from scratch_control.msg import ScratchAxes
 # roslib.load_manifest('knex_ros')
 
 ############################################################
@@ -44,17 +46,9 @@ if __name__ == '__main__':
 
     pub_msg = rospy.Publisher("Scratch_msg", String, queue_size=10)
    
-    pub_servo = [] 
-    pub_servo.append(rospy.Publisher("servo1_cmd", Int16, queue_size=10))
-    pub_servo.append(rospy.Publisher("servo2_cmd", Int16, queue_size=10))
-    pub_servo.append(rospy.Publisher("servo3_cmd", Int16, queue_size=10))
-    pub_servo.append(rospy.Publisher("servo4_cmd", Int16, queue_size=10))
-    pub_servo.append(rospy.Publisher("servo5_cmd", Int16, queue_size=10))
-    pub_servo.append(rospy.Publisher("servo6_cmd", Int16, queue_size=10))
-    pub_servo.append(rospy.Publisher("servo7_cmd", Int16, queue_size=10))
-    pub_servo.append(rospy.Publisher("servo8_cmd", Int16, queue_size=10))
-    pub_servo.append(rospy.Publisher("servo9_cmd", Int16, queue_size=10))
-    pub_servo.append(rospy.Publisher("servo10_cmd", Int16, queue_size=10))
+    pub_axes = [] 
+    pub_axes.append(rospy.Publisher("scratch_msg_x", Float32, queue_size=1))
+    pub_axes.append(rospy.Publisher("scratch_msg_y", Float32, queue_size=1))
     
     rospy.Subscriber("range", Int16, rangeCallback)
 

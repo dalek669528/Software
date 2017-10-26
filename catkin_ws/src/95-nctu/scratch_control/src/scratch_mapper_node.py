@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 import rospy
 import math
-from scratch_control.msg import ScratchAxes
 from duckietown_msgs.msg import Twist2DStamped, BoolStamped
 from sensor_msgs.msg import Joy
 from std_msgs.msg import Float32
+
 from __builtin__ import True
+
+# from scratch_control.msg import ScratchAxes
 
 class JoyMapper(object):
     def __init__(self):
@@ -33,7 +35,8 @@ class JoyMapper(object):
 
         # Subscriptions
         self.sub_joy_ = rospy.Subscriber("joy", Joy, self.cbJoy, queue_size=1)
-        self.sub_scratch = rospy.Subscriber("scratch_msg", ScratchAxes, self.cbScratch, queue_size=1)
+        self.sub_scratch_x = rospy.Subscriber("scratch_msg_x", Float32, self.cbScratch_x, queue_size=1)
+        self.sub_scratch_y = rospy.Subscriber("scratch_msg_y", Float32, self.cbScratch_y, queue_size=1)
         
         # timer
         # self.pub_timer = rospy.Timer(rospy.Duration.from_sec(self.pub_timestep),self.publishControl)
@@ -63,8 +66,12 @@ class JoyMapper(object):
         self.publishControl()
         self.processButtons(joy_msg)
 
-    def cbScratch(self, scratch_msg):
-        self.scratch_axes = scratch_msg
+    def cbScratch_x(self, scratch_msg):
+        self.scratch_axes_x = scratch_msg
+        self.publishControlForScratch()
+
+    def cbScratch_y(self, scratch_msg):
+        self.scratch_axes_y = scratch_msg
         self.publishControlForScratch()
 
     def publishControl(self):
@@ -83,15 +90,15 @@ class JoyMapper(object):
     def publishControlForScratch(self):
         car_cmd_msg = Twist2DStamped()
         car_cmd_msg.header.stamp = self.joy.header.stamp
-        car_cmd_msg.v = self.scratch_axes * self.v_gain #Left stick V-axis. Up is positive
+        car_cmd_msg.v = self.scratch_axes_x * self.v_gain #Left stick V-axis. Up is positive
         if self.bicycle_kinematics:
             # Implements Bicycle Kinematics - Nonholonomic Kinematics
             # see https://inst.eecs.berkeley.edu/~ee192/sp13/pdf/steer-control.pdf
-            steering_angle = self.scratch_axes * self.steer_angle_gain
+            steering_angle = self.scratch_axes_y * self.steer_angle_gain
             car_cmd_msg.omega = car_cmd_msg.v / self.simulated_vehicle_length * math.tan(steering_angle)
         else:
             # Holonomic Kinematics for Normal Driving
-            car_cmd_msg.omega = self.scratch_axes * self.omega_gain
+            car_cmd_msg.omega = self.scratch_axes_y * self.omega_gain
         self.pub_car_cmd.publish(car_cmd_msg)
 # Button List index of joy.buttons array:
 # a = 0, b=1, x=2. y=3, lb=4, rb=5, back = 6, start =7,
