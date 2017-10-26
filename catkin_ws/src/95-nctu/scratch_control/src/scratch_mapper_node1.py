@@ -33,7 +33,7 @@ class JoyMapper(object):
 
         # Subscriptions
         self.sub_joy_ = rospy.Subscriber("joy", Joy, self.cbJoy, queue_size=1)
-        self.sub_scratch = rospy.Subscriber("scratch_msg", Int16, self.cbScratch, queue_size=1)
+   #     self.sub_scratch = rospy.Subscriber("scratch_msg", Int16, self.cbScratch, queue_size=1)
 
         # timer
         # self.pub_timer = rospy.Timer(rospy.Duration.from_sec(self.pub_timestep),self.publishControl)
