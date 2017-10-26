@@ -79,6 +79,8 @@ class JoyMapper(object):
     def publishControl(self):
         car_cmd_msg = Twist2DStamped()
         car_cmd_msg.header.stamp = self.joy.header.stamp
+        rospy.loginfo('joy.axes[1] = %f' %self.joy.axes[1] )
+        rospy.loginfo('joy.axes[3] = %f' %self.joy.axes[3] )
         car_cmd_msg.v = self.joy.axes[1] * self.v_gain #Left stick V-axis. Up is positive
         if self.bicycle_kinematics:
             # Implements Bicycle Kinematics - Nonholonomic Kinematics
@@ -91,8 +93,8 @@ class JoyMapper(object):
         self.pub_car_cmd.publish(car_cmd_msg)
     def publishControlForScratch(self):
         car_cmd_msg = Twist2DStamped()
-        rospy.loginfo('scratch_axes_x = %d' %self.scratch_axes_x )
-        rospy.loginfo('scratch_axes_y = %d' %self.scratch_axes_y )
+        rospy.loginfo('scratch_axes_x = %f' %self.scratch_axes_x )
+        rospy.loginfo('scratch_axes_y = %f' %self.scratch_axes_y )
         car_cmd_msg.header.stamp = self.joy.header.stamp
         car_cmd_msg.v = self.scratch_axes_x * self.v_gain #Left stick V-axis. Up is positive
         if self.bicycle_kinematics:
