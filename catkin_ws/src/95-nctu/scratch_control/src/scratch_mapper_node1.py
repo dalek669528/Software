@@ -64,8 +64,9 @@ class JoyMapper(object):
         self.processButtons(joy_msg)
 
     def cbScratch(self, scratch_msg):
-        self.scratch_axes = scratch_msg
-        self.publishControlForScratch()
+        print "\n\ncdScratch\n\n\n"
+#        self.scratch_axes = scratch_msg
+#        self.publishControlForScratch()
 
     def publishControl(self):
         car_cmd_msg = Twist2DStamped()
@@ -80,7 +81,7 @@ class JoyMapper(object):
             # Holonomic Kinematics for Normal Driving
             car_cmd_msg.omega = self.joy.axes[3] * self.omega_gain
         self.pub_car_cmd.publish(car_cmd_msg)
-
+'''
     def publishControlForScratch(self):
         car_cmd_msg = Twist2DStamped()
         car_cmd_msg.header.stamp = self.joy.header.stamp
@@ -94,7 +95,7 @@ class JoyMapper(object):
             # Holonomic Kinematics for Normal Driving
             car_cmd_msg.omega = self.scratch_axes * self.omega_gain
         self.pub_car_cmd.publish(car_cmd_msg)
-
+'''
 # Button List index of joy.buttons array:
 # a = 0, b=1, x=2. y=3, lb=4, rb=5, back = 6, start =7,
 # logitek = 8, left joy = 9, right joy = 10
