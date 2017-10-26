@@ -68,10 +68,12 @@ class JoyMapper(object):
 
     def cbScratch_x(self, scratch_msg):
         self.scratch_axes_x = scratch_msg
+        rospy.loginfo('cbScracch_x')
         self.publishControlForScratch()
 
     def cbScratch_y(self, scratch_msg):
         self.scratch_axes_y = scratch_msg
+        rospy.loginfo('cbScracch_y')
         self.publishControlForScratch()
 
     def publishControl(self):
@@ -89,6 +91,8 @@ class JoyMapper(object):
         self.pub_car_cmd.publish(car_cmd_msg)
     def publishControlForScratch(self):
         car_cmd_msg = Twist2DStamped()
+        rospy.loginfo('scratch_axes_x = %d' %self.scratch_axes_x )
+        rospy.loginfo('scratch_axes_y = %d' %self.scratch_axes_y )
         car_cmd_msg.header.stamp = self.joy.header.stamp
         car_cmd_msg.v = self.scratch_axes_x * self.v_gain #Left stick V-axis. Up is positive
         if self.bicycle_kinematics:
