@@ -39,7 +39,7 @@ if __name__ == '__main__':
     rospy.init_node('scratch_connector')
     PORT = 42001
     HOST = 'localhost'
-    HOST = '192.168.1.17'
+    HOST = '192.168.1.35'
     rospy.loginfo("Connecting...")
     scratchSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     scratchSock.connect((HOST, PORT))
