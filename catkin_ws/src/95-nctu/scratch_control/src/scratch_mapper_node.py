@@ -41,8 +41,8 @@ class JoyMapper(object):
 
         # Subscriptions
         self.sub_joy_ = rospy.Subscriber("joy", Joy, self.cbJoy, queue_size=1)
-        self.sub_scratch_x = rospy.Subscriber("scratch_msg_x", Float32, self.cbScratch_x, queue_size=1)
-        self.sub_scratch_y = rospy.Subscriber("scratch_msg_y", Float32, self.cbScratch_y, queue_size=1)
+        #self.sub_scratch_x = rospy.Subscriber("scratch_msg_x", Float32, self.cbScratch_x, queue_size=1)
+        #self.sub_scratch_y = rospy.Subscriber("scratch_msg_y", Float32, self.cbScratch_y, queue_size=1)
         self.sub_scratch = rospy.Subscriber("scratch_msg", String, self.cbScratch, queue_size=1)
         
         # timer
@@ -73,7 +73,7 @@ class JoyMapper(object):
         if not self.state_scratch:
         	self.publishControl()
         	self.processButtons(joy_msg)
-
+'''
     def cbScratch_x(self, scratch_msg):
         self.scratch_axes_x = scratch_msg.data
         self.publishControlForScratch()
@@ -81,7 +81,7 @@ class JoyMapper(object):
     def cbScratch_y(self, scratch_msg):
         self.scratch_axes_y = scratch_msg.data
         self.publishControlForScratch()
-
+'''
     def cbScratch(self, scratch_msg):
         self.scratch_msg = scratch_msg.data
         if (self.scratch_msg == "go"):

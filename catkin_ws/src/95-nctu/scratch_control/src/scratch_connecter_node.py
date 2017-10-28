@@ -37,9 +37,9 @@ if __name__ == '__main__':
 
     pub_msg_debug = rospy.Publisher("scratch_msg_debug", String, queue_size=10)
    
-    pub_axes = [] 
-    pub_axes.append(rospy.Publisher("scratch_msg_x", Float32, queue_size=1))
-    pub_axes.append(rospy.Publisher("scratch_msg_y", Float32, queue_size=1))
+    #pub_axes = [] 
+    #pub_axes.append(rospy.Publisher("scratch_msg_x", Float32, queue_size=1))
+    #pub_axes.append(rospy.Publisher("scratch_msg_y", Float32, queue_size=1))
     pub_msg = rospy.Publisher("scratch_msg", String, queue_size=1)
 
     while True:
@@ -56,20 +56,20 @@ if __name__ == '__main__':
         pub_msg.publish(msg_str)
 
         if(msg_str == "broadcast \"go\""):
-            pub_axes[0].publish(1.0)
+            #pub_axes[0].publish(1.0)
             pub_msg.publish("go")
         if(msg_str == "broadcast \"back\""):
-            pub_axes[0].publish(-1.0)
+            #pub_axes[0].publish(-1.0)
             pub_msg.publish("back")
         if(msg_str == "broadcast \"left\""):
-            pub_axes[1].publish(1.0)
+            #pub_axes[1].publish(1.0)
             pub_msg.publish("left")
         if(msg_str == "broadcast \"right\""):
-            pub_axes[1].publish(-1.0)
+            #pub_axes[1].publish(-1.0)
             pub_msg.publish("right")
         if(msg_str == "broadcast \"stop\""):
-            pub_axes[0].publish(0.0)
-            pub_axes[1].publish(0.0)
+            #pub_axes[0].publish(0.0)
+            #pub_axes[1].publish(0.0)
             pub_msg.publish("stop")
 
             
