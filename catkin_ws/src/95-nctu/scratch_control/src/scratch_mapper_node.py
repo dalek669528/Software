@@ -5,10 +5,7 @@ from duckietown_msgs.msg import Twist2DStamped, BoolStamped
 from sensor_msgs.msg import Joy
 from std_msgs.msg import Float32
 from std_msgs.msg import String
-
 from __builtin__ import True
-
-# from scratch_control.msg import ScratchAxes
 
 class JoyMapper(object):
     def __init__(self):
@@ -41,8 +38,6 @@ class JoyMapper(object):
 
         # Subscriptions
         self.sub_joy_ = rospy.Subscriber("joy", Joy, self.cbJoy, queue_size=1)
-        #self.sub_scratch_x = rospy.Subscriber("scratch_msg_x", Float32, self.cbScratch_x, queue_size=1)
-        #self.sub_scratch_y = rospy.Subscriber("scratch_msg_y", Float32, self.cbScratch_y, queue_size=1)
         self.sub_scratch = rospy.Subscriber("scratch_msg", String, self.cbScratch, queue_size=1)
         
         # timer
@@ -73,14 +68,6 @@ class JoyMapper(object):
         if not self.state_scratch:
             self.publishControl()
             self.processButtons(joy_msg)
-
-#    def cbScratch_x(self, scratch_msg):
-#        self.scratch_axes_x = scratch_msg.data
-#        self.publishControlForScratch()
-
-#    def cbScratch_y(self, scratch_msg):
-#        self.scratch_axes_y = scratch_msg.data
-#        self.publishControlForScratch()
 
     def cbScratch(self, scratch_msg):
         self.scratch_msg = scratch_msg.data
@@ -137,6 +124,7 @@ class JoyMapper(object):
             # Holonomic Kinematics for Normal Driving
             car_cmd_msg.omega = self.scratch_axes_y * self.omega_gain
         self.pub_car_cmd.publish(car_cmd_msg)
+
 # Button List index of joy.buttons array:
 # a = 0, b=1, x=2. y=3, lb=4, rb=5, back = 6, start =7,
 # logitek = 8, left joy = 9, right joy = 10
