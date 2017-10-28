@@ -4,6 +4,7 @@ import math
 from duckietown_msgs.msg import Twist2DStamped, BoolStamped
 from sensor_msgs.msg import Joy
 from std_msgs.msg import Float32
+from std_msgs.msg import String
 
 from __builtin__ import True
 
@@ -17,6 +18,10 @@ class JoyMapper(object):
         self.joy = None
         self.last_pub_msg = None
         self.last_pub_time = rospy.Time.now()
+        self.scratch_axes_x = 0.0
+        self.scratch_axes_y = 0.0
+        self.scratch_msg = ""
+        self.state_scratch = False
 
         # Setup Parameters
         self.v_gain = self.setupParam("~speed_gain", 0.41)
@@ -25,8 +30,7 @@ class JoyMapper(object):
         self.steer_angle_gain = self.setupParam("~steer_angle_gain", 1)
         self.simulated_vehicle_length = self.setupParam("~simulated_vehicle_length", 0.18)
 
-        self.scratch_axes_x = 0.0
-        self.scratch_axes_y = 0.0
+
         # Publications
         self.pub_car_cmd = rospy.Publisher("~car_cmd", Twist2DStamped, queue_size=1)
         self.pub_joy_override = rospy.Publisher("~joystick_override", BoolStamped, queue_size=1)
@@ -39,6 +43,7 @@ class JoyMapper(object):
         self.sub_joy_ = rospy.Subscriber("joy", Joy, self.cbJoy, queue_size=1)
         self.sub_scratch_x = rospy.Subscriber("scratch_msg_x", Float32, self.cbScratch_x, queue_size=1)
         self.sub_scratch_y = rospy.Subscriber("scratch_msg_y", Float32, self.cbScratch_y, queue_size=1)
+        self.sub_scratch = rospy.Subscriber("scratch_msg", String, self.cbScratch, queue_size=1)
         
         # timer
         # self.pub_timer = rospy.Timer(rospy.Duration.from_sec(self.pub_timestep),self.publishControl)
@@ -65,8 +70,9 @@ class JoyMapper(object):
 
     def cbJoy(self, joy_msg):
         self.joy = joy_msg
-       # self.publishControl()
-       # self.processButtons(joy_msg)
+        if not self.state_scratch:
+        	self.publishControl()
+        	self.processButtons(joy_msg)
 
     def cbScratch_x(self, scratch_msg):
         self.scratch_axes_x = scratch_msg.data
@@ -77,7 +83,27 @@ class JoyMapper(object):
         self.publishControlForScratch()
 
     def cbScratch(self, scratch_msg):
-        self.scratch_axes_y = scratch_msg.data
+        self.scratch_msg = scratch_msg.data
+        if (self.scratch_msg == "go"):
+        	self.scratch_axes_x = 1.0
+        	self.scratch_axes_y = 0.0
+        	self.state_scratch = True
+        elif (self.scratch_msg == "back"):
+        	self.scratch_axes_x = -1.0
+        	self.scratch_axes_y = 0.0
+        	self.state_scratch = True
+        elif (self.scratch_msg == "left"):
+        	self.scratch_axes_x = 0.0
+        	self.scratch_axes_y = 1.0
+        	self.state_scratch = True
+        elif (self.scratch_msg == "right"):
+        	self.scratch_axes_x = 0.0
+        	self.scratch_axes_y = -1.0
+        	self.state_scratch = True
+        elif (self.scratch_msg == "stop"):
+        	self.scratch_axes_x = 0.0
+        	self.scratch_axes_y = 0.0
+        	self.state_scratch = False
         self.publishControlForScratch()
     
     def publishControl(self):
@@ -95,6 +121,7 @@ class JoyMapper(object):
             # Holonomic Kinematics for Normal Driving
             car_cmd_msg.omega = self.joy.axes[3] * self.omega_gain
         self.pub_car_cmd.publish(car_cmd_msg)
+
     def publishControlForScratch(self):
         car_cmd_msg = Twist2DStamped()
         car_cmd_msg.header.stamp = self.joy.header.stamp

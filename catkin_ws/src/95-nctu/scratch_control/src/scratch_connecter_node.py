@@ -13,12 +13,8 @@ from std_msgs.msg import Float32
 from std_msgs.msg import Int16
 from std_msgs.msg import String
 
-# from scratch_control.msg import ScratchAxes
-# roslib.load_manifest('knex_ros')
-
 ############################################################
 def sendScratchCommand(cmd):
-############################################################
     n = len(cmd)
     a = array('c')
     a.append(chr((n >> 24) & 0xFF))
@@ -28,13 +24,7 @@ def sendScratchCommand(cmd):
     scratchSock.send(a.tostring() + cmd)
     
 ############################################################
-def rangeCallback(msg):
-############################################################
-    sendScratchCommand("sensor-update \"range\" %d" % msg.data)
-    
-############################################################
 if __name__ == '__main__':
-############################################################
     rospy.loginfo("Scratch_connector started")
     rospy.init_node('scratch_connector')
     PORT = 42001
@@ -45,13 +35,12 @@ if __name__ == '__main__':
     scratchSock.connect((HOST, PORT))
     rospy.loginfo("Connected!")
 
-    pub_msg = rospy.Publisher("Scratch_msg", String, queue_size=10)
+    pub_msg_debug = rospy.Publisher("scratch_msg_debug", String, queue_size=10)
    
     pub_axes = [] 
     pub_axes.append(rospy.Publisher("scratch_msg_x", Float32, queue_size=1))
     pub_axes.append(rospy.Publisher("scratch_msg_y", Float32, queue_size=1))
-    
-    rospy.Subscriber("range", Int16, rangeCallback)
+    pub_msg.append(rospy.Publisher("scratch_msg", String, queue_size=1))
 
     while True:
         data = scratchSock.recv(1024)
@@ -68,14 +57,19 @@ if __name__ == '__main__':
 
         if(msg_str == "broadcast \"go\""):
             pub_axes[0].publish(1.0)
+            pub_msg.publish("go")
         if(msg_str == "broadcast \"back\""):
             pub_axes[0].publish(-1.0)
+            pub_msg.publish("back")
         if(msg_str == "broadcast \"left\""):
             pub_axes[1].publish(1.0)
+            pub_msg.publish("left")
         if(msg_str == "broadcast \"right\""):
             pub_axes[1].publish(-1.0)
+            pub_msg.publish("right")
         if(msg_str == "broadcast \"stop\""):
             pub_axes[0].publish(0.0)
             pub_axes[1].publish(0.0)
+            pub_msg.publish("stop")
 
             
