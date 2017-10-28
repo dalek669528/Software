@@ -73,15 +73,15 @@ class JoyMapper(object):
         if not self.state_scratch:
             self.publishControl()
             self.processButtons(joy_msg)
-'''
-    def cbScratch_x(self, scratch_msg):
-        self.scratch_axes_x = scratch_msg.data
-        self.publishControlForScratch()
 
-    def cbScratch_y(self, scratch_msg):
-        self.scratch_axes_y = scratch_msg.data
-        self.publishControlForScratch()
-'''
+#    def cbScratch_x(self, scratch_msg):
+#        self.scratch_axes_x = scratch_msg.data
+#        self.publishControlForScratch()
+
+#    def cbScratch_y(self, scratch_msg):
+#        self.scratch_axes_y = scratch_msg.data
+#        self.publishControlForScratch()
+
     def cbScratch(self, scratch_msg):
         self.scratch_msg = scratch_msg.data
         if (self.scratch_msg == "go"):
