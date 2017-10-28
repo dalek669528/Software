@@ -71,8 +71,8 @@ class JoyMapper(object):
     def cbJoy(self, joy_msg):
         self.joy = joy_msg
         if not self.state_scratch:
-        	self.publishControl()
-        	self.processButtons(joy_msg)
+            self.publishControl()
+            self.processButtons(joy_msg)
 '''
     def cbScratch_x(self, scratch_msg):
         self.scratch_axes_x = scratch_msg.data
