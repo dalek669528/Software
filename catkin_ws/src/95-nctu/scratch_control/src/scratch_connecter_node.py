@@ -40,7 +40,7 @@ if __name__ == '__main__':
     pub_axes = [] 
     pub_axes.append(rospy.Publisher("scratch_msg_x", Float32, queue_size=1))
     pub_axes.append(rospy.Publisher("scratch_msg_y", Float32, queue_size=1))
-    pub_msg.append(rospy.Publisher("scratch_msg", String, queue_size=1))
+    pub_msg = rospy.Publisher("scratch_msg", String, queue_size=1)
 
     while True:
         data = scratchSock.recv(1024)
