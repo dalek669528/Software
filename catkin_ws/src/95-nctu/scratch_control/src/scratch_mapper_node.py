@@ -76,6 +76,10 @@ class JoyMapper(object):
         self.scratch_axes_y = scratch_msg.data
         self.publishControlForScratch()
 
+    def cbScratch(self, scratch_msg):
+        self.scratch_axes_y = scratch_msg.data
+        self.publishControlForScratch()
+    
     def publishControl(self):
         car_cmd_msg = Twist2DStamped()
         car_cmd_msg.header.stamp = self.joy.header.stamp
