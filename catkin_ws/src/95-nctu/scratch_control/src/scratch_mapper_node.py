@@ -65,8 +65,8 @@ class JoyMapper(object):
 
     def cbJoy(self, joy_msg):
         self.joy = joy_msg
-        self.publishControl()
-        self.processButtons(joy_msg)
+       # self.publishControl()
+       # self.processButtons(joy_msg)
 
     def cbScratch_x(self, scratch_msg):
         self.scratch_axes_x = scratch_msg.data
@@ -97,9 +97,9 @@ class JoyMapper(object):
         self.pub_car_cmd.publish(car_cmd_msg)
     def publishControlForScratch(self):
         car_cmd_msg = Twist2DStamped()
+        car_cmd_msg.header.stamp = self.joy.header.stamp
         rospy.loginfo('scratch_axes_x = %f' %self.scratch_axes_x )
         rospy.loginfo('scratch_axes_y = %f' %self.scratch_axes_y )
-        car_cmd_msg.header.stamp = self.joy.header.stamp
         car_cmd_msg.v = self.scratch_axes_x * self.v_gain #Left stick V-axis. Up is positive
         if self.bicycle_kinematics:
             # Implements Bicycle Kinematics - Nonholonomic Kinematics
@@ -121,19 +121,16 @@ class JoyMapper(object):
             override_msg.data = True
             rospy.loginfo('override_msg = True')
             self.pub_joy_override.publish(override_msg)
-            
         elif (joy_msg.buttons[7] == 1): #the start button
             override_msg = BoolStamped()
             override_msg.header.stamp = self.joy.header.stamp
             override_msg.data = False
             rospy.loginfo('override_msg = False')
             self.pub_joy_override.publish(override_msg)
-            
         elif (joy_msg.buttons[5] == 1): # Right back button
             self.state_verbose ^= True
             rospy.loginfo('state_verbose = %s' % self.state_verbose)
             rospy.set_param('line_detector_node/verbose', self.state_verbose) # bad - should be published for all to hear - not set a specific param
-
         elif (joy_msg.buttons[4] == 1): #Left back button
             self.state_parallel_autonomy ^= True
             rospy.loginfo('state_parallel_autonomy = %s' % self.state_parallel_autonomy)
@@ -159,7 +156,6 @@ class JoyMapper(object):
             avoidance_msg.header.stamp = self.joy.header.stamp
             avoidance_msg.data = True
             self.pub_avoidance.publish(avoidance_msg)
-
         else:
             some_active = sum(joy_msg.buttons) > 0
             if some_active:
@@ -167,7 +163,6 @@ class JoyMapper(object):
 
 
 if __name__ == "__main__":
-    print "\n\n\n\nysyssssysysys\n\n111111111\n\n\n\n"
     rospy.init_node("joy_mapper",anonymous=False)
     joy_mapper = JoyMapper()
     rospy.spin()
