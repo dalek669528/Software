@@ -107,7 +107,7 @@
 	<group if="$(arg following)">
 		<!-- Follow apriltags node -->
 		<!-- Receive msg from detect_apriltags_node -->
-		<remap from="input" to="position_info" />
+		<remap from="follow_apriltags_node/input" to="detect_apriltags_node/position_info" />
 		<!-- open follow_apriltags_node -->
 		<include file="$(find csp_demo_apriltags)/launch/follow_apriltags_node.launch">
 			<arg name="veh" value="$(arg veh)"/>

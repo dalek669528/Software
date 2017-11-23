@@ -22,7 +22,6 @@ class AprilFollow(object):
         print ("Start to follow apriltags:")
 
     def callback(self, msg):
-        print "jhuyg"
         self.pose = msg
         self.car_cmd()
         self.stop()
