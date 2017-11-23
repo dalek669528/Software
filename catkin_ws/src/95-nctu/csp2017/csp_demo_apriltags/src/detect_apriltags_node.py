@@ -2,7 +2,7 @@
 import rospkg
 import rospy
 import yaml
-from duckietown_msgs.msg import ???
+from duckietown_msgs.msg import AprilTagDetectionArray, AprilTagDetection
 import numpy as np
 import tf.transformations as tr
 from geometry_msgs.msg import PoseStamped, Point
@@ -13,7 +13,7 @@ class AprilPostPros(object):
         self.node_name = "detect_apriltags_node"
 
         # -------- subscriber --------
-        self.sub_prePros = rospy.Subscriber("???", AprilTagDetectionArray, self.callback, queue_size=1)
+        self.sub_prePros = rospy.Subscriber("~tag_info", AprilTagDetectionArray, self.callback, queue_size=1)
 
         # -------- publisher --------
         self.pub_info = rospy.Publisher("~position_info", Point, queue_size=1)
@@ -24,16 +24,16 @@ class AprilPostPros(object):
         # Load tag detections message
         for detection in msg.detections:
             #Try to print the ID and position of the apriltags
-            tag_id = ???
-            x = ???
-            y = ???
-            z = ???
+            tag_id = msg.id
+            x = msg.pose.pose.position.x
+            y = msg.pose.pose.position.y
+            z = msg.pose.pose.position.z
             print ("ID: ", tag_id)
             print ("(x,y,z): ", x, y, z)
 
             #send the msg of the poing
             pos = Point()
-            #pos = ???
+            pos = msg.pose.pose.position
             self.pub_info.publish(pos)
         
 if __name__ == '__main__': 

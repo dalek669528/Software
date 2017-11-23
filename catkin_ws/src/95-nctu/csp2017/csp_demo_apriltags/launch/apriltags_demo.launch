@@ -93,7 +93,7 @@
 		</include>
 		<!-- open detect_apriltags_node -->
 		<remap from="detect_apriltags_node/tag_info" to="tag_detections" />
-		<include ???>
+		<include file="$(find csp_demo_apriltags)/detect_apriltags_node.launch">
 			<arg name="veh" value="$(arg veh)"/>
 			<arg name="local" value="$(arg local)"/>
 			<arg name="config" value="$(arg config)"/>
