@@ -24,16 +24,16 @@ class AprilPostPros(object):
         # Load tag detections message
         for detection in msg.detections:
             #Try to print the ID and position of the apriltags
-            tag_id = msg.id
-            x = msg.pose.pose.position.x
-            y = msg.pose.pose.position.y
-            z = msg.pose.pose.position.z
+            tag_id = msg.detections.id
+            x = msg.detections.pose.pose.position.x
+            y = msg.detections.pose.pose.position.y
+            z = msg.detections.pose.pose.position.z
             print ("ID: ", tag_id)
             print ("(x,y,z): ", x, y, z)
 
             #send the msg of the poing
             pos = Point()
-            pos = msg.pose.pose.position
+            pos = msg.detections.pose.pose.position
             self.pub_info.publish(pos)
         
 if __name__ == '__main__': 
