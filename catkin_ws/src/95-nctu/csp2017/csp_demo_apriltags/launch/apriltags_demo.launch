@@ -16,7 +16,7 @@
 	<arg name="/camera/cam_info" default="true"/>
 	<arg name="/camera/raw/rect" default="true"/>
 	<arg name="apriltags" default="true"/>
-	<arg name="following" default="false"/>
+	<arg name="following" default="true"/>
 	<!-- end switch args -->
 
 	<!-- Start Camera -->  
