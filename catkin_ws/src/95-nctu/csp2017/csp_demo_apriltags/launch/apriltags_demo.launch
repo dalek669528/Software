@@ -109,7 +109,7 @@
 		<!-- Receive msg from detect_apriltags_node -->
 		<remap from="input" to="position_info" />
 		<!-- open follow_apriltags_node -->
-		<include file="$(find apriltags_ros)/launch/follow_apriltags_node.launch>
+		<include file="$(find apriltags_ros)/launch/follow_apriltags_node.launch">
 			<arg name="veh" value="$(arg veh)"/>
 			<arg name="local" value="$(arg local)"/>
 		</include>
