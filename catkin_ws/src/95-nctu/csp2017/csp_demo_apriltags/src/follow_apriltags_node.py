@@ -14,7 +14,7 @@ class AprilFollow(object):
         self.pose = Point()
 
         # -------- subscriber --------
-        self.sub_pose = rospy.Subscriber("~input", ???, self.callback, queue_size=1)
+        self.sub_pose = rospy.Subscriber("~input", Point, self.callback, queue_size=1)
 
         # -------- publisher --------
         self.pub_car_cmd = rospy.Publisher("~car_cmd", Twist2DStamped, queue_size=1)
@@ -43,7 +43,7 @@ class AprilFollow(object):
             cmd.omega = 0
 
         #publish the cmd
-        ???
+        self.pub_car_cmd.publish(cmd)
 
     # make the robot stop
     def stop(self):
@@ -53,7 +53,7 @@ class AprilFollow(object):
         cmd.omega = 0
         
         #publish the cmd
-        ???
+        self.pub_car_cmd.publish(cmd)
 
 if __name__ == '__main__': 
     rospy.init_node('AprilPostPros',anonymous=False)
