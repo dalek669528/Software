@@ -45,7 +45,7 @@ if __name__ == '__main__':
         msg_len = (ord(l[0]) << 24) + (ord(l[1]) << 16) + (ord(l[2]) << 8) + ord(l[3])
         l2 = l[4:]
         msg_str = ''.join(l2)
-        rospy.loginfo("received %d bytes:%s" % (msg_len, msg_str))
+        #rospy.loginfo("received %d bytes:%s" % (msg_len, msg_str))
         if(len(msg_str) != msg_len):
             rospy.logerr("-E- ERROR - message length differs from sent length.  (%d vs %d)" % (msg_len, len(msg_str)))
             
