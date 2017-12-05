@@ -216,7 +216,7 @@
 	<group if="$(arg fsm)">
 		<!-- FSM -->
 		<!-- no remapping for FSM - full topic names specified in params yaml -->
-		<include file="$(find fsm)/launch/fsm_node.launch">
+		<include file="$(find scratch_control)/launch/fsm_node.launch">
 			<arg name="veh" value="$(arg veh)"/>        
 			<arg name="config" value="$(arg config)"/>        
 			<arg name="param_file_name" value="$(arg fsm_file_name)"/>        
