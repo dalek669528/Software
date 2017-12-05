@@ -32,15 +32,15 @@ if __name__ == '__main__':
     HOST = 'dalek669528.local'
     if rospy.has_param('scratch_IP'):
         print "\n\nhas scratch_IP\n\n"
-    else
+    else:
         print "\n\ndoesn't have scratch_IP\n\n"
     if rospy.has_param('~scratch_IP'):
         print "\n\nhas ~scratch_IP\n\n"
-    else
+    else:
         print "\n\ndoesn't have ~scratch_IP\n\n"
     if rospy.has_param('/scratch_IP'):
         print "\n\nhas /scratch_IP\n\n"
-    else
+    else:
         print "\n\ndoesn't have /scratch_IP\n\n"
     #HOST = rospy.get_param("scratch_IP")
     rospy.loginfo("Connecting...")
