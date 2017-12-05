@@ -3,23 +3,23 @@ initial_state: "JOYSTICK_CONTROL"
 
 events: #Maps from subscribing topic to signal ids
   joystick_override_on: 
-    topic: "joy_mapper_node/joystick_override"
+    topic: "scratch_mapper_node/joystick_override"
     msg_type: "BoolStamped"
     trigger: True
   joystick_override_off: 
-    topic: "joy_mapper_node/joystick_override"
+    topic: "scratch_mapper_node/joystick_override"
     msg_type: "BoolStamped"
     trigger: False
   parallel_autonomy_on:
-    topic: "joy_mapper_node/parallel_autonomy"
+    topic: "scratch_mapper_node/parallel_autonomy"
     msg_type: "BoolStamped"
     trigger: True
   parallel_autonomy_off:
-    topic: "joy_mapper_node/parallel_autonomy"
+    topic: "scratch_mapper_node/parallel_autonomy"
     msg_type: "BoolStamped"
     trigger: False
   start_avoidance:
-    topic: "joy_mapper_node/start_avoidance"
+    topic: "scratch_mapper_node/start_avoidance"
     msg_type: "BoolStamped"
     trigger: True
   at_stop_line:

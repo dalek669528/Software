@@ -204,20 +204,20 @@
 			<arg name="param_file_name" value="$(arg param_file_name)"/>
 		</include>
 
-		<!-- joy_mapper -->
+		<!-- joy_mapper
 		<include file="$(find scratch_control)/launch/joy_mapper_node.launch">
 			<arg name="veh" value="$(arg veh)"/>
 			<arg name="config" value="$(arg config)"/>
 			<arg name="param_file_name" value="$(arg param_file_name)"/>
-		</include>
-	
-		<!--
+		</include> -->
+
 		<include file="$(find scratch_control)/launch/scratch_mapper_node.launch">
 	        <arg name="veh" value="$(arg veh)"/>
 	        <arg name="config" value="$(arg config)"/>
 	        <arg name="param_file_name" value="$(arg param_file_name)"/>
 	    </include>
 		
+		<!--
 	    <include file="$(find scratch_control)/launch/scratch_connecter_node.launch">
 	        <arg name="veh" value="$(arg veh)"/>
 	        <arg name="scratch_IP" value="$(arg scratch_IP)"/>
