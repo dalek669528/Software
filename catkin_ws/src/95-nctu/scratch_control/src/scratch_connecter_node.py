@@ -29,8 +29,20 @@ if __name__ == '__main__':
     rospy.init_node('scratch_connector')
     PORT = 42001
     #HOST = 'localhost'
-    #HOST = 'dalek669528.local'
-    HOST = rospy.get_param("scratch_IP")
+    HOST = 'dalek669528.local'
+    if rospy.has_param('scratch_IP'):
+        print "\n\nhas scratch_IP\n\n"
+    else
+        print "\n\ndoesn't have scratch_IP\n\n"
+    if rospy.has_param('~scratch_IP'):
+        print "\n\nhas ~scratch_IP\n\n"
+    else
+        print "\n\ndoesn't have ~scratch_IP\n\n"
+    if rospy.has_param('/scratch_IP'):
+        print "\n\nhas /scratch_IP\n\n"
+    else
+        print "\n\ndoesn't have /scratch_IP\n\n"
+    #HOST = rospy.get_param("scratch_IP")
     rospy.loginfo("Connecting...")
     scratchSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     scratchSock.connect((HOST, PORT))
