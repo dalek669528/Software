@@ -19,7 +19,6 @@
     <!-- scratch_mapper -->
     <include file="$(find scratch_control)/launch/scratch_mapper_node.launch">
         <arg name="veh" value="$(arg veh)"/>
-        <arg name="scratch_IP" value="$(arg scratch_IP)"/>
         <arg name="local" value="$(arg local)"/>
         <arg name="config" value="$(arg config)"/>
         <arg name="param_file_name" value="$(arg joy_mapper_param_file_name)"/>
@@ -28,6 +27,7 @@
     <!-- scratch_connecter -->
     <include file="$(find scratch_control)/launch/scratch_connecter_node.launch">
         <arg name="veh" value="$(arg veh)"/>
+        <arg name="scratch_IP" value="$(arg scratch_IP)"/>
         <arg name="local" value="$(arg local)"/>
         <arg name="config" value="$(arg config)"/>
     </include>
