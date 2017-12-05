@@ -30,6 +30,7 @@ if __name__ == '__main__':
     PORT = 42001
     HOST = 'localhost'
     HOST = 'dalek669528.local'
+    HOST = rospy.get_param("scratch_IP")
     rospy.loginfo("Connecting...")
     scratchSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     scratchSock.connect((HOST, PORT))
