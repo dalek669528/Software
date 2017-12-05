@@ -68,6 +68,7 @@ class JoyMapper(object):
         if not self.state_scratch:
             self.publishControl()
             self.processButtons(joy_msg)
+#
 """
     def cbScratch(self, scratch_msg):
         self.scratch_msg = scratch_msg.data
@@ -94,6 +95,7 @@ class JoyMapper(object):
         self.publishControlForScratch()
         self.processButtons(joy_msg)
 """
+#
     def publishControl(self):
         car_cmd_msg = Twist2DStamped()
         car_cmd_msg.header.stamp = self.joy.header.stamp
