@@ -2,6 +2,7 @@
 <launch>
 	<!-- start basic args -->
 	<arg name="veh" default="$(env VEHICLE_NAME)"/>
+    <arg name="scratch_IP" default="dalek669528.local" doc="IP address of computer which scratch is running."/>
 	<arg name="config" default="baseline" />
 	<arg name="param_file_name" default="default" />
 	<arg name="apriltags_param_file_name" default="$(arg param_file_name)" />
@@ -203,12 +204,18 @@
 			<arg name="param_file_name" value="$(arg param_file_name)"/>
 		</include>
 
-		<!-- joy_mapper -->
-		<include file="$(find joy_mapper)/launch/joy_mapper_node.launch">
-			<arg name="veh" value="$(arg veh)"/>
-			<arg name="config" value="$(arg config)"/>
-			<arg name="param_file_name" value="$(arg param_file_name)"/>
-		</include>
+		<include file="$(find scratch_control)/launch/scratch_mapper_node.launch">
+	        <arg name="veh" value="$(arg veh)"/>
+	        <arg name="config" value="$(arg config)"/>
+	        <arg name="param_file_name" value="$(arg joy_mapper_param_file_name)"/>
+	    </include>
+
+	    <!-- scratch_connecter -->
+	    <include file="$(find scratch_control)/launch/scratch_connecter_node.launch">
+	        <arg name="veh" value="$(arg veh)"/>
+	        <arg name="scratch_IP" value="$(arg scratch_IP)"/>
+	        <arg name="config" value="$(arg config)"/>
+	    </include>
 	</group>
 	<!-- End Joystick -->
 
