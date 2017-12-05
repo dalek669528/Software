@@ -17,7 +17,7 @@ class JoyMapper(object):
         self.last_pub_time = rospy.Time.now()
         self.scratch_axes_x = 0.0
         self.scratch_axes_y = 0.0
-        #self.scratch_msg = ""
+        self.scratch_msg = ""
         self.state_scratch = False
 
         # Setup Parameters

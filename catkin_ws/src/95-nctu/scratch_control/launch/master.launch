@@ -217,13 +217,11 @@
 	        <arg name="param_file_name" value="$(arg param_file_name)"/>
 	    </include>
 		
-		<!--
 	    <include file="$(find scratch_control)/launch/scratch_connecter_node.launch">
 	        <arg name="veh" value="$(arg veh)"/>
 	        <arg name="scratch_IP" value="$(arg scratch_IP)"/>
 	        <arg name="config" value="$(arg config)"/>
 	    </include>
-	    -->
 
 	</group>
 	<!-- End Joystick -->
