@@ -12,7 +12,7 @@ class JoyMapper(object):
         self.node_name = rospy.get_name()
         rospy.loginfo("[%s] Initializing " %(self.node_name))
 
-        self.joy = None
+        self.joy = Joy()
         self.last_pub_msg = None
         self.last_pub_time = rospy.Time.now()
         self.scratch_axes_x = 0.0
