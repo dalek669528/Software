@@ -15,8 +15,8 @@ class JoyMapper(object):
         self.joy = None
         self.last_pub_msg = None
         self.last_pub_time = rospy.Time.now()
-        #self.scratch_axes_x = 0.0
-        #self.scratch_axes_y = 0.0
+        self.scratch_axes_x = 0.0
+        self.scratch_axes_y = 0.0
         #self.scratch_msg = ""
         self.state_scratch = False
 
@@ -38,7 +38,7 @@ class JoyMapper(object):
 
         # Subscriptions
         self.sub_joy_ = rospy.Subscriber("joy", Joy, self.cbJoy, queue_size=1)
-        #self.sub_scratch = rospy.Subscriber("scratch_msg", String, self.cbScratch, queue_size=1)
+        self.sub_scratch = rospy.Subscriber("scratch_msg", String, self.cbScratch, queue_size=1)
         
         # timer
         # self.pub_timer = rospy.Timer(rospy.Duration.from_sec(self.pub_timestep),self.publishControl)
@@ -68,7 +68,7 @@ class JoyMapper(object):
         if not self.state_scratch:
             self.publishControl()
             self.processButtons(joy_msg)
-    """
+
     def cbScratch(self, scratch_msg):
         self.scratch_msg = scratch_msg.data
         if (self.scratch_msg == "go"):
@@ -92,8 +92,8 @@ class JoyMapper(object):
         	self.scratch_axes_y = 0.0
         	self.state_scratch = False
         self.publishControlForScratch()
-        self.processButtons(joy_msg)
-    """
+        #self.processButtons(joy_msg)
+
     def publishControl(self):
         car_cmd_msg = Twist2DStamped()
         car_cmd_msg.header.stamp = self.joy.header.stamp
@@ -109,7 +109,7 @@ class JoyMapper(object):
             # Holonomic Kinematics for Normal Driving
             car_cmd_msg.omega = self.joy.axes[3] * self.omega_gain
         self.pub_car_cmd.publish(car_cmd_msg)
-    """
+
     def publishControlForScratch(self):
         car_cmd_msg = Twist2DStamped()
         car_cmd_msg.header.stamp = self.joy.header.stamp
@@ -125,7 +125,7 @@ class JoyMapper(object):
             # Holonomic Kinematics for Normal Driving
             car_cmd_msg.omega = self.scratch_axes_y * self.omega_gain
         self.pub_car_cmd.publish(car_cmd_msg)
-    """
+
 # Button List index of joy.buttons array:
 # a = 0, b=1, x=2. y=3, lb=4, rb=5, back = 6, start =7,
 # logitek = 8, left joy = 9, right joy = 10
