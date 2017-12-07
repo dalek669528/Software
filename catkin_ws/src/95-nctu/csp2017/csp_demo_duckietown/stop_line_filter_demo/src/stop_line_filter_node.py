@@ -30,6 +30,8 @@ class StopLineFilterNode(object):
         self.pub_at_stop_line = rospy.Publisher("~at_stop_line", BoolStamped, queue_size=1)
 
 
+        print "\n\n\n\n  *****\n\nIn stop line node1\n\n*****\n\n\n\n"
+
         self.params_update = rospy.Timer(rospy.Duration.from_sec(1.0), self.updateParams)
 
     def setupParam(self,param_name,default_value):          #Set up param value  (used in line 18,19,20)
@@ -60,6 +62,7 @@ class StopLineFilterNode(object):
         self.lane_pose = lane_pose_msg
 
     def processSegments(self, segment_list_msg):            #Process segment list and decide whether there is a stop line.
+        print "\n\n\n\n  *****\n\nIn stop line node2\n\n*****\n\n\n\n"
         if not self.active or self.sleep:
             return
         good_seg_count=0
@@ -94,7 +97,8 @@ class StopLineFilterNode(object):
             stop_line_point.y = stop_line_y_accumulator/good_seg_count
             stop_line_reading_msg.stop_line_point = stop_line_point
             stop_line_reading_msg.at_stop_line = stop_line_point.x < self.stop_distance and math.fabs(stop_line_point.y) < self.lanewidth/4 
-            self.pub_stop_line_reading.publish(stop_line_reading_msg)    
+            self.pub_stop_line_reading.publish(stop_line_reading_msg)
+            print "\n\n\n\n  *****\n\nIn stop line node3\n\n*****\n\n\n\n"    
             if stop_line_reading_msg.at_stop_line:
                 ###Task: assign fsm stop line message, if message data is true, then it will trigger stop event 
                 ###Problem
