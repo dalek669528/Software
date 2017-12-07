@@ -98,15 +98,13 @@ class StopLineFilterNode(object):
             stop_line_reading_msg.stop_line_point = stop_line_point
             stop_line_reading_msg.at_stop_line = stop_line_point.x < self.stop_distance and math.fabs(stop_line_point.y) < self.lanewidth/4 
             self.pub_stop_line_reading.publish(stop_line_reading_msg)
-            print "\n\n\n\n  *****\n\nIn stop line node3\n\n*****\n\n\n\n"    
+            print top_line_reading_msg.at_stop_line
             if stop_line_reading_msg.at_stop_line:
                 ###Task: assign fsm stop line message, if message data is true, then it will trigger stop event 
                 ###Problem
                 msg = BoolStamped                #Declaration
                 msg.header.stamp = stop_line_reading_msg.header.stamp    #Assign segment_list time stamp
                 msg.data = True            #If you want to trigger the event at_stop_line, message data must be "true" 
-                
-                
                 print "Event stop line fiter is triggered ? :"+str(msg.data)
 
                 self.pub_at_stop_line.publish(msg)
