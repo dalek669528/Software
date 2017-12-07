@@ -23,8 +23,8 @@ class StopLineFilterNode(object):
         self.state = "JOYSTICK_CONTROL"
         self.sleep = False
         ## publishers and subscribers
-        self.sub_segs      = rospy.Subscriber("?????", SegmentList, self.processSegments)
-        self.sub_lane      = rospy.Subscriber("?????",LanePose, self.processLanePose)
+        self.sub_segs      = rospy.Subscriber("~segment_list", SegmentList, self.processSegments)
+        self.sub_lane      = rospy.Subscriber("~lane_pose",LanePose, self.processLanePose)
         self.sub_mode      = rospy.Subscriber("fsm_node/mode",FSMState, self.processStateChange)
         self.pub_stop_line_reading = rospy.Publisher("~stop_line_reading", StopLineReading, queue_size=1)
         self.pub_at_stop_line = rospy.Publisher("~at_stop_line", BoolStamped, queue_size=1)
@@ -98,9 +98,9 @@ class StopLineFilterNode(object):
             if stop_line_reading_msg.at_stop_line:
                 ###Task: assign fsm stop line message, if message data is true, then it will trigger stop event 
                 ###Problem
-                msg =  ?????                #Declaration
-                msg.header.stamp = ?????    #Assign segment_list time stamp
-                msg.data = ?????            #If you want to trigger the event at_stop_line, message data must be "true" 
+                msg = BoolStamped()                      #Declaration
+                msg.header.stamp = segment_list_msg.header.stamp    #Assign segment_list time stamp
+                msg.data = True            #If you want to trigger the event at_stop_line, message data must be "true" 
                 
                 
                 print "Event stop line fiter is triggered ? :"+msg.data
