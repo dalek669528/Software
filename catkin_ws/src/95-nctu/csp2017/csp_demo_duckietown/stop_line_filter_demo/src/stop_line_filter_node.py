@@ -62,7 +62,6 @@ class StopLineFilterNode(object):
         self.lane_pose = lane_pose_msg
 
     def processSegments(self, segment_list_msg):            #Process segment list and decide whether there is a stop line.
-        print "\n\n\n\n  *****\n\nIn stop line node2\n\n*****\n\n\n\n"
         if not self.active or self.sleep:
             return
         good_seg_count=0
@@ -98,7 +97,7 @@ class StopLineFilterNode(object):
             stop_line_reading_msg.stop_line_point = stop_line_point
             stop_line_reading_msg.at_stop_line = stop_line_point.x < self.stop_distance and math.fabs(stop_line_point.y) < self.lanewidth/4 
             self.pub_stop_line_reading.publish(stop_line_reading_msg)
-            print top_line_reading_msg.at_stop_line
+            print stop_line_reading_msg.at_stop_line
             if stop_line_reading_msg.at_stop_line:
                 ###Task: assign fsm stop line message, if message data is true, then it will trigger stop event 
                 ###Problem
