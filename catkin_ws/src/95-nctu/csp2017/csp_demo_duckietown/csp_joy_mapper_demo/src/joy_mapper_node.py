@@ -33,7 +33,7 @@ class JoyMapperNode(object):
 		car_cmd_msg.header.stamp = joy_msg.header.stamp
 		car_cmd_msg.v = joy_msg.axes[4] * self.v #Left stick V-axis. Up is positive
 		# Holonomic Kinematics for Normal Driving
-		car_cmd_msg.omega = self.joy.axes[3]
+		car_cmd_msg.omega = joy_msg.axes[3]
 		self.pub_car_cmd.publish(car_cmd_msg)
 
 	def JoyButton(self, joy_msg):
