@@ -99,7 +99,7 @@ class StopLineFilterNode(object):
                 ###Task: assign fsm stop line message, if message data is true, then it will trigger stop event 
                 ###Problem
                 msg = BoolStamped()                      #Declaration
-                msg.header.stamp = segment_list_msg.header.stamp    #Assign segment_list time stamp
+                msg.header.stamp = stop_line_reading_msg.header.stamp    #Assign segment_list time stamp
                 msg.data = True            #If you want to trigger the event at_stop_line, message data must be "true" 
                 
                 
