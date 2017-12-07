@@ -1,5 +1,5 @@
 # Initail state of the FSM
-initial_state: "???"
+initial_state: "APPLE"
 
 events: #Maps from subscribing topic to signal ids
   pressX:
@@ -28,22 +28,22 @@ nodes:
 states:
   APPLE:
     transitions:
-      ???: "???"
-      ???: "???"
+      pressA: "ORANGE"
+      pressB: "BANANA"
     active_nodes:
       - stop_line_filter_node
       - lane_filter_node
 
   BANANA:
     transitions:
-      ???: "???"
-      ???: "???"
+      pressX: "APPLE"
+      pressY: "ORANGE"
     active_nodes:
       - lane_filter_node
 
-  ???:
+  ORANGE:
     transitions:
-      ???: "???"
-      ???: "???"
+      pressB: "BANANA"
+      pressY: "APPLE"
     active_nodes:
       - stop_line_filter_node

@@ -3,7 +3,7 @@
 	<arg name="veh" doc="Name of vehicle"/>
 	<arg name="pkg_name" default="csp_joy_mapper_demo"/>
 	<arg name="local" default="false"/>
-	<arg name="joymapper" default="false"/>
+	<arg name="joymapper" default="true"/>
 	<arg name="fsm" default="false"/>
 	<arg name="config" default="baseline" />
 	<include unless="$(arg local)" file="$(find duckietown)/machines"/>
