@@ -5,19 +5,19 @@ events: #Maps from subscribing topic to signal ids
   pressX:
     topic: "joy_mapper_node/pub_X"
     msg_type: "BoolStamped"
-    trigger: ???
+    trigger: True
   pressY:
-    topic: "???"
+    topic: "joy_mapper_node/pub_Y"
     msg_type: "BoolStamped"
-    trigger: ???
+    trigger: True
   pressA: 
-    topic: "???"
+    topic: "joy_mapper_node/pub_B"
     msg_type: "BoolStamped"
-    trigger: ???
+    trigger: True
   pressB: 
-    topic: "???"
+    topic: "joy_mapper_node/pub_A"
     msg_type: "BoolStamped"
-    trigger: ???
+    trigger: False
 
 # Define nodes 
 nodes:
