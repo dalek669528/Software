@@ -2,22 +2,20 @@
 #   2012 Jon Stephan
 #   jfstepha@gmail.com
 
-from array import array
 import socket
 import rospy
-import roslib
 from std_msgs.msg import String
+from sensor_msgs.msg import Joy
+from duckietown_msgs.msg import Twist2DStamped, BoolStamped
+from array import array
 
-############################################################
-
-    
-############################################################
 class ScratchConnecter(object):
     def __init__(self):
         self.node_name = rospy.get_name()
         rospy.loginfo("[%s] Initializing " %(self.node_name))
- 
 
+        self.joy = Joy()
+        self.state_scratch = False
         self.port = 42001
         self.host = rospy.get_param("/scratch_IP")
         self.rospy.loginfo("Connecting...")
@@ -27,19 +25,16 @@ class ScratchConnecter(object):
 
         # Publications
         self.pub_msg_debug = rospy.Publisher("scratch_msg_debug", String, queue_size=10)
-        self.pub_msg = rospy.Publisher("scratch_msg", String, queue_size=1)
+        self.pub_msg = rospy.Publisher("joy_with_scratch", Joy, queue_size=1)
 
         # Subscriptions
-        #self.sub_joy_ = rospy.Subscriber("joy", Joy, self.cbJoy, queue_size=1)
-        #self.sub_scratch = rospy.Subscriber("scratch_msg", String, self.cbScratch, queue_size=1)
-        
-
-        # timer
-        # self.pub_timer = rospy.Timer(rospy.Duration.from_sec(self.pub_timestep),self.publishControl)
-        #self.param_timer = rospy.Timer(rospy.Duration.from_sec(1.0),self.cbParamTimer)
-        #self.has_complained = False
+        self.sub_joy_ = rospy.Subscriber("joy", Joy, self.cbJoy, queue_size=1)
 
         self.listener()
+    def cbJoy(self, joy_msg):
+        if not self.state_scratch:
+            self.joy = joy_msg
+            self.pub_msg.publish(self.joy)
 
     def listener(self):
         while True:
@@ -49,22 +44,33 @@ class ScratchConnecter(object):
             msg_len = (ord(l[0]) << 24) + (ord(l[1]) << 16) + (ord(l[2]) << 8) + ord(l[3])
             l2 = l[4:]
             msg_str = ''.join(l2)
-            #rospy.loginfo("received %d bytes:%s" % (msg_len, msg_str))
+            rospy.loginfo("received %d bytes:%s" % (msg_len, msg_str))
             if(len(msg_str) != msg_len):
                 rospy.logerr("-E- ERROR - message length differs from sent length.  (%d vs %d)" % (msg_len, len(msg_str)))
                 
             pub_msg_debug.publish(msg_str)
-
+            self.scratch_msg = scratch_msg.data
             if(msg_str == "broadcast \"go\""):
-                pub_msg.publish("go")
-            if(msg_str == "broadcast \"back\""):
-                pub_msg.publish("back")
-            if(msg_str == "broadcast \"left\""):
-                pub_msg.publish("left")
-            if(msg_str == "broadcast \"right\""):
-                pub_msg.publish("right")
-            if(msg_str == "broadcast \"stop\""):
-                pub_msg.publish("stop")
+                self.self.joy.axes[1] = 1.0
+                self.self.joy.axes[3] = 0.0
+                self.state_scratch = True
+            elif(msg_str == "broadcast \"back\""):
+                self.self.joy.axes[1] = -1.0
+                self.self.joy.axes[3] = 0.0
+                self.state_scratch = True
+            elif(msg_str == "broadcast \"left\""):
+                self.self.joy.axes[1] = 0.0
+                self.self.joy.axes[3] = 1.0
+                self.state_scratch = True
+            elif(msg_str == "broadcast \"right\""):
+                self.self.joy.axes[1] = 0.0
+                self.self.joy.axes[3] = -1.0
+                self.state_scratch = True
+            elif(msg_str == "broadcast \"stop\""):
+                self.self.joy.axes[1] = 0.0
+                self.self.joy.axes[3] = 0.0
+                self.state_scratch = False
+            self.pub_msg.publish(self.joy)
 
     def sendScratchCommand(self, cmd):
         n = len(cmd)

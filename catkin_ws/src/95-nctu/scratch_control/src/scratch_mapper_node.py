@@ -3,7 +3,6 @@ import rospy
 import math
 from duckietown_msgs.msg import Twist2DStamped, BoolStamped
 from sensor_msgs.msg import Joy
-from std_msgs.msg import Float32
 from std_msgs.msg import String
 from __builtin__ import True
 
