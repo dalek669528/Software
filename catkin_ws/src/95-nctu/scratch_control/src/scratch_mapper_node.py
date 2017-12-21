@@ -7,7 +7,7 @@ from std_msgs.msg import Float32
 from std_msgs.msg import String
 from __builtin__ import True
 
-class JoyMapper(object):
+class ScratchMapper(object):
     def __init__(self):
         self.node_name = rospy.get_name()
         rospy.loginfo("[%s] Initializing " %(self.node_name))
@@ -179,6 +179,6 @@ class JoyMapper(object):
 
 
 if __name__ == "__main__":
-    rospy.init_node("joy_mapper",anonymous=False)
-    joy_mapper = JoyMapper()
+    rospy.init_node("scratch_mapper",anonymous=False)
+    scratch_mapper = ScratchMapper()
     rospy.spin()
