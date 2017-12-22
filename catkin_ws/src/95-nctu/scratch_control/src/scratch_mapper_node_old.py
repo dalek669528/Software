@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 import rospy
 import math
-
 from duckietown_msgs.msg import Twist2DStamped, BoolStamped
 from sensor_msgs.msg import Joy
-
+from std_msgs.msg import String
 from __builtin__ import True
 
 class ScratchMapper(object):
@@ -15,6 +14,10 @@ class ScratchMapper(object):
         self.joy = None
         self.last_pub_msg = None
         self.last_pub_time = rospy.Time.now()
+        self.scratch_axes_x = 0.0
+        self.scratch_axes_y = 0.0
+        self.scratch_msg = ""
+        self.state_scratch = False
 
         # Setup Parameters
         self.v_gain = self.setupParam("~speed_gain", 0.41)
@@ -22,6 +25,7 @@ class ScratchMapper(object):
         self.bicycle_kinematics = self.setupParam("~bicycle_kinematics", 0)
         self.steer_angle_gain = self.setupParam("~steer_angle_gain", 1)
         self.simulated_vehicle_length = self.setupParam("~simulated_vehicle_length", 0.18)
+
 
         # Publications
         self.pub_car_cmd = rospy.Publisher("~car_cmd", Twist2DStamped, queue_size=1)
@@ -32,8 +36,9 @@ class ScratchMapper(object):
         self.pub_avoidance = rospy.Publisher("~start_avoidance",BoolStamped,queue_size=1)
 
         # Subscriptions
-        self.sub_joy_ = rospy.Subscriber("~joy_with_scratch", Joy, self.cbJoy, queue_size=1)
-
+        self.sub_joy_ = rospy.Subscriber("joy", Joy, self.cbJoy, queue_size=1)
+        self.sub_scratch = rospy.Subscriber("scratch_msg", String, self.cbScratch, queue_size=1)
+        
         # timer
         # self.pub_timer = rospy.Timer(rospy.Duration.from_sec(self.pub_timestep),self.publishControl)
         self.param_timer = rospy.Timer(rospy.Duration.from_sec(1.0),self.cbParamTimer)
@@ -59,12 +64,40 @@ class ScratchMapper(object):
 
     def cbJoy(self, joy_msg):
         self.joy = joy_msg
-        self.publishControl()
-        self.processButtons(joy_msg)
+        if not self.state_scratch:
+            self.publishControl()
+            self.processButtons(joy_msg)
+
+    def cbScratch(self, scratch_msg):
+        self.scratch_msg = scratch_msg.data
+        if (self.scratch_msg == "go"):
+        	self.scratch_axes_x = 1.0
+        	self.scratch_axes_y = 0.0
+        	self.state_scratch = True
+        elif (self.scratch_msg == "back"):
+        	self.scratch_axes_x = -1.0
+        	self.scratch_axes_y = 0.0
+        	self.state_scratch = True
+        elif (self.scratch_msg == "left"):
+        	self.scratch_axes_x = 0.0
+        	self.scratch_axes_y = 1.0
+        	self.state_scratch = True
+        elif (self.scratch_msg == "right"):
+        	self.scratch_axes_x = 0.0
+        	self.scratch_axes_y = -1.0
+        	self.state_scratch = True
+        elif (self.scratch_msg == "stop"):
+        	self.scratch_axes_x = 0.0
+        	self.scratch_axes_y = 0.0
+        	self.state_scratch = False
+        self.publishControlForScratch()
+        #self.processButtons(joy_msg)
 
     def publishControl(self):
         car_cmd_msg = Twist2DStamped()
         car_cmd_msg.header.stamp = self.joy.header.stamp
+        #rospy.loginfo('joy.axes[1] = %f' %self.joy.axes[1] )
+        #rospy.loginfo('joy.axes[3] = %f' %self.joy.axes[3] )
         car_cmd_msg.v = self.joy.axes[1] * self.v_gain #Left stick V-axis. Up is positive
         if self.bicycle_kinematics:
             # Implements Bicycle Kinematics - Nonholonomic Kinematics
@@ -74,6 +107,22 @@ class ScratchMapper(object):
         else:
             # Holonomic Kinematics for Normal Driving
             car_cmd_msg.omega = self.joy.axes[3] * self.omega_gain
+        self.pub_car_cmd.publish(car_cmd_msg)
+
+    def publishControlForScratch(self):
+        car_cmd_msg = Twist2DStamped()
+        car_cmd_msg.header.stamp = self.joy.header.stamp
+        #rospy.loginfo('scratch_axes_x = %f' %self.scratch_axes_x )
+        #rospy.loginfo('scratch_axes_y = %f' %self.scratch_axes_y )
+        car_cmd_msg.v = self.scratch_axes_x * self.v_gain #Left stick V-axis. Up is positive
+        if self.bicycle_kinematics:
+            # Implements Bicycle Kinematics - Nonholonomic Kinematics
+            # see https://inst.eecs.berkeley.edu/~ee192/sp13/pdf/steer-control.pdf
+            steering_angle = self.scratch_axes_y * self.steer_angle_gain
+            car_cmd_msg.omega = car_cmd_msg.v / self.simulated_vehicle_length * math.tan(steering_angle)
+        else:
+            # Holonomic Kinematics for Normal Driving
+            car_cmd_msg.omega = self.scratch_axes_y * self.omega_gain
         self.pub_car_cmd.publish(car_cmd_msg)
 
 # Button List index of joy.buttons array:
@@ -87,19 +136,16 @@ class ScratchMapper(object):
             override_msg.data = True
             rospy.loginfo('override_msg = True')
             self.pub_joy_override.publish(override_msg)
-            
         elif (joy_msg.buttons[7] == 1): #the start button
             override_msg = BoolStamped()
             override_msg.header.stamp = self.joy.header.stamp
             override_msg.data = False
             rospy.loginfo('override_msg = False')
             self.pub_joy_override.publish(override_msg)
-            
         elif (joy_msg.buttons[5] == 1): # Right back button
             self.state_verbose ^= True
             rospy.loginfo('state_verbose = %s' % self.state_verbose)
             rospy.set_param('line_detector_node/verbose', self.state_verbose) # bad - should be published for all to hear - not set a specific param
-
         elif (joy_msg.buttons[4] == 1): #Left back button
             self.state_parallel_autonomy ^= True
             rospy.loginfo('state_parallel_autonomy = %s' % self.state_parallel_autonomy)
@@ -125,7 +171,6 @@ class ScratchMapper(object):
             avoidance_msg.header.stamp = self.joy.header.stamp
             avoidance_msg.data = True
             self.pub_avoidance.publish(avoidance_msg)
-
         else:
             some_active = sum(joy_msg.buttons) > 0
             if some_active:

@@ -16,14 +16,6 @@
         <rosparam command="load" file="$(find duckietown)/config/$(arg config)/joy/joy_node/$(arg param_file_name).yaml"/>
     </node>
 
-    <!-- scratch_mapper -->
-    <include file="$(find scratch_control)/launch/scratch_mapper_node.launch">
-        <arg name="veh" value="$(arg veh)"/>
-        <arg name="local" value="$(arg local)"/>
-        <arg name="config" value="$(arg config)"/>
-        <arg name="param_file_name" value="$(arg joy_mapper_param_file_name)"/>
-    </include>
-
     <!-- scratch_connecter -->
     <include file="$(find scratch_control)/launch/scratch_connecter_node.launch">
         <arg name="veh" value="$(arg veh)"/>
@@ -32,8 +24,17 @@
         <arg name="config" value="$(arg config)"/>
     </include>
 
+    <!-- scratch_mapper -->
+    <remap from="scratch_connecter_node/joy_with_scratch" to="scratch_mapper_node/joy_with_scratch"/>
+    <include file="$(find scratch_control)/launch/scratch_mapper_node.launch">
+        <arg name="veh" value="$(arg veh)"/>
+        <arg name="local" value="$(arg local)"/>
+        <arg name="config" value="$(arg config)"/>
+        <arg name="param_file_name" value="$(arg joy_mapper_param_file_name)"/>
+    </include>
+
     <!-- run inverse_kinematics_node -->
-    <remap from="inverse_kinematics_node/car_cmd" to="scratch_mapper_node/car_cmd"/>
+    <remap from="inverse_kinematics_node/car_cmd" to="joy_mapper_node/car_cmd"/>
     <remap from="inverse_kinematics_node/wheels_cmd" to="wheels_driver_node/wheels_cmd" />
     <include file="$(find dagu_car)/launch/inverse_kinematics_node.launch">
         <arg name="veh" value="$(arg veh)"/>

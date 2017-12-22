@@ -1,6 +1,6 @@
 <launch>
 	<arg name="pkg_name" value="scratch_control"/>
-	<arg name="node_name" default="scratch_connecter_node2"/>
+	<arg name="node_name" default="scratch_connecter_node"/>
 
 	<arg name="veh" doc="Name of vehicle. ex: megaman"/>
     <arg name="scratch_IP" default="dalek669528.local" doc="IP address of computer which scratch is running."/>
