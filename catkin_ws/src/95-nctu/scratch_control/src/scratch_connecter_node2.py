@@ -25,7 +25,7 @@ class ScratchConnecter(object):
         self.pub_msg = rospy.Publisher("joy_with_scratch", Joy, queue_size=1)
 
         # Subscriptions
-        self.sub_joy_ = rospy.Subscriber("joy2", Joy, self.cbJoy, queue_size=1)
+        self.sub_joy_ = rospy.Subscriber("joy", Joy, self.cbJoy, queue_size=1)
 
         self.listener()
 
