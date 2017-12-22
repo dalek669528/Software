@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-#   2012 Jon Stephan
-#   jfstepha@gmail.com
 
 from array import array
 import socket

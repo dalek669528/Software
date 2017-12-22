@@ -1,10 +1,9 @@
 <launch>
-    <arg name="veh" default="$(env VEHICLE_NAME)"/>
+    <arg name="veh" doc="Name of vehicle. ex: megaman"/>
     <arg name="local" default="false" doc="true for running on laptop. false for running on vehicle."/>
-    <arg name="scratch_IP" default="dalek669528.local" doc="IP address of computer which scratch is running."/>
     <arg name="config" default="baseline" doc="Specify a config."/>
     <arg name="param_file_name" default="default" doc="Specify a param file. ex:megaman." />
-    <arg name="joy_mapper_param_file_name" default="$(arg param_file_name)" doc="Specify a scratch_mapper param file. ex:high_speed" />
+    <arg name="joy_mapper_param_file_name" default="$(arg param_file_name)" doc="Specify a joy_mapper param file. ex:high_speed" />
 
 
     <include file="$(find duckietown)/machines"/>
@@ -16,23 +15,13 @@
         <rosparam command="load" file="$(find duckietown)/config/$(arg config)/joy/joy_node/$(arg param_file_name).yaml"/>
     </node>
 
-    <!-- scratch_connecter -->
-    <include file="$(find scratch_control)/launch/scratch_connecter_node2.launch">
-        <arg name="veh" value="$(arg veh)"/>
-        <arg name="scratch_IP" value="$(arg scratch_IP)"/>
-        <arg name="local" value="$(arg local)"/>
-        <arg name="config" value="$(arg config)"/>
-    </include>
-
     <!-- joy_mapper -->
-    <!--remap from="scratch_connecter_node2/joy_with_scratch" to="joy"/-->
     <include file="$(find joy_mapper)/launch/joy_mapper_node.launch">
         <arg name="veh" value="$(arg veh)"/>
         <arg name="local" value="$(arg local)"/>
         <arg name="config" value="$(arg config)"/>
         <arg name="param_file_name" value="$(arg joy_mapper_param_file_name)"/>
     </include>
-
 
     <!-- run inverse_kinematics_node -->
     <remap from="inverse_kinematics_node/car_cmd" to="joy_mapper_node/car_cmd"/>
