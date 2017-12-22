@@ -36,7 +36,7 @@ class ScratchConnecter(object):
 
     def listener(self):
         while True:
-            data = scratchSock.recv(1024)
+            data = self.scratchSock.recv(1024)
             if not data: break
             l = list(data)
             msg_len = (ord(l[0]) << 24) + (ord(l[1]) << 16) + (ord(l[2]) << 8) + ord(l[3])
@@ -47,26 +47,25 @@ class ScratchConnecter(object):
                 rospy.logerr("-E- ERROR - message length differs from sent length.  (%d vs %d)" % (msg_len, len(msg_str)))
                 
             pub_msg_debug.publish(msg_str)
-            self.scratch_msg = scratch_msg.data
             if(msg_str == "broadcast \"go\""):
-                self.self.joy.axes[1] = 1.0
-                self.self.joy.axes[3] = 0.0
+                self.joy.axes[1] = 1.0
+                self.joy.axes[3] = 0.0
                 self.state_scratch = True
             elif(msg_str == "broadcast \"back\""):
-                self.self.joy.axes[1] = -1.0
-                self.self.joy.axes[3] = 0.0
+                self.joy.axes[1] = -1.0
+                self.joy.axes[3] = 0.0
                 self.state_scratch = True
             elif(msg_str == "broadcast \"left\""):
-                self.self.joy.axes[1] = 0.0
-                self.self.joy.axes[3] = 1.0
+                self.joy.axes[1] = 0.0
+                self.joy.axes[3] = 1.0
                 self.state_scratch = True
             elif(msg_str == "broadcast \"right\""):
-                self.self.joy.axes[1] = 0.0
-                self.self.joy.axes[3] = -1.0
+                self.joy.axes[1] = 0.0
+                self.joy.axes[3] = -1.0
                 self.state_scratch = True
             elif(msg_str == "broadcast \"stop\""):
-                self.self.joy.axes[1] = 0.0
-                self.self.joy.axes[3] = 0.0
+                self.joy.axes[1] = 0.0
+                self.joy.axes[3] = 0.0
                 self.state_scratch = False
             self.pub_msg.publish(self.joy)
 
