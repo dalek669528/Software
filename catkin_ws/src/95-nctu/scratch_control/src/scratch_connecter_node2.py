@@ -11,7 +11,7 @@ class ScratchConnecter(object):
         self.node_name = rospy.get_name()
         rospy.loginfo("[%s] Initializing " %(self.node_name))
 
-        self.joy = None
+        self.joy = Joy()
         self.state_scratch = False
         self.port = 42001
         self.host = rospy.get_param("/scratch_IP")
