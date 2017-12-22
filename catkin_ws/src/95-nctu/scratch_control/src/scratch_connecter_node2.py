@@ -32,6 +32,8 @@ class ScratchConnecter(object):
     def cbJoy(self, joy_msg):
         if not self.state_scratch:
             self.joy = joy_msg
+            rospy.loginfo('joy.axes[1] = %f' %self.joy.axes[1] )
+            rospy.loginfo('joy.axes[3] = %f' %self.joy.axes[3] )
             self.pub_msg.publish(self.joy)
 
     def listener(self):
