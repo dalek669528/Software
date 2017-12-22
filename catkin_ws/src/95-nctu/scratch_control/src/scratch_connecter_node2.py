@@ -38,6 +38,7 @@ class ScratchConnecter(object):
         while True:
             rospy.loginfo("lisening")
             data = self.scratchSock.recv(1024)
+            rospy.loginfo("lisened")
             if not data: break
             l = list(data)
             msg_len = (ord(l[0]) << 24) + (ord(l[1]) << 16) + (ord(l[2]) << 8) + ord(l[3])
