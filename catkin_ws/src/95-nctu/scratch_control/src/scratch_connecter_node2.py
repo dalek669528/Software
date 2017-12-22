@@ -17,7 +17,7 @@ class ScratchConnecter(object):
         self.host = rospy.get_param("/scratch_IP")
         rospy.loginfo("Connecting...")
         self.scratchSock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.scratchSock.connect((host, port))
+        self.scratchSock.connect((self.host, self.port))
         rospy.loginfo("Connected!")
 
         # Publications
