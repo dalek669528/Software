@@ -32,8 +32,6 @@ class ScratchConnecter(object):
     def cbJoy(self, joy_msg):
         if not self.state_scratch:
             self.joy = joy_msg
-            rospy.loginfo('joy.axes[1] = %f' %self.joy.axes[1] )
-            rospy.loginfo('joy.axes[3] = %f' %self.joy.axes[3] )
             self.pub_msg.publish(self.joy)
 
     def listener(self):
@@ -49,28 +47,25 @@ class ScratchConnecter(object):
                 rospy.logerr("-E- ERROR - message length differs from sent length.  (%d vs %d)" % (msg_len, len(msg_str)))
                 
             self.pub_msg_debug.publish(msg_str)
-            
+            axes = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+            buttons = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             if(msg_str == "broadcast \"go\""):
-                self.joy.axes[1] = 1.0
-                self.joy.axes[3] = 0.0
+                axes[1] = 1.0
                 self.state_scratch = True
             elif(msg_str == "broadcast \"back\""):
-                self.joy.axes[1] = -1.0
-                self.joy.axes[3] = 0.0
+                axes[1] = -1.0
                 self.state_scratch = True
             elif(msg_str == "broadcast \"left\""):
-                self.joy.axes[1] = 0.0
-                self.joy.axes[3] = 1.0
+                axes[3] = 1.0
                 self.state_scratch = True
             elif(msg_str == "broadcast \"right\""):
-                self.joy.axes[1] = 0.0
-                self.joy.axes[3] = -1.0
+                axes[3] = -1.0
                 self.state_scratch = True
             elif(msg_str == "broadcast \"stop\""):
-                self.joy.axes[1] = 0.0
-                self.joy.axes[3] = 0.0
                 self.state_scratch = False
-            
+
+            self.joy.axes = tuple(axes)
+            self.joy.buttons = tuple(buttons)
             self.pub_msg.publish(self.joy)
 
     def sendScratchCommand(self, cmd):
