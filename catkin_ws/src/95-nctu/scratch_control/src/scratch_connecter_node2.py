@@ -1,14 +1,14 @@
 #!/usr/bin/env python
-
 import socket
 import rospy
+from array import array
 from std_msgs.msg import String
 from sensor_msgs.msg import Joy
 from duckietown_msgs.msg import Twist2DStamped, BoolStamped
-from array import array
 
 class ScratchConnecter(object):
     def __init__(self):
+        '''
         self.node_name = rospy.get_name()
         rospy.loginfo("[%s] Initializing " %(self.node_name))
 
@@ -26,9 +26,10 @@ class ScratchConnecter(object):
         self.pub_msg = rospy.Publisher("joy_with_scratch", Joy, queue_size=1)
 
         # Subscriptions
-        self.sub_joy_ = rospy.Subscriber("joy", Joy, self.cbJoy, queue_size=1)
+        self.sub_joy_ = rospy.Subscriber("joy2", Joy, self.cbJoy, queue_size=1)
 
         self.listener()
+
     def cbJoy(self, joy_msg):
         if not self.state_scratch:
             self.joy = joy_msg
@@ -78,9 +79,9 @@ class ScratchConnecter(object):
         a.append(chr((n >>  8) & 0xFF))
         a.append(chr(n & 0xFF))
         self.scratchSock.send(a.tostring() + cmd)
-
+        '''
 if __name__ == '__main__':
-    rospy.init_node('scratch_connecter_node2',anonymous=False)
+    rospy.init_node("scratch_connecter2",anonymous=False)
     scratch_connecter = ScratchConnecter()
     rospy.spin()
 
