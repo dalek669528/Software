@@ -21,8 +21,8 @@ class ScratchConnecter(object):
         rospy.loginfo("Connected!")
 
         # Publications
-        self.pub_msg_debug = rospy.Publisher("scratch_msg_debug", String, queue_size=10)
-        self.pub_msg = rospy.Publisher("joy_with_scratch", Joy, queue_size=1)
+        self.pub_msg_debug = rospy.Publisher("~scratch_msg_debug", String, queue_size=10)
+        self.pub_msg = rospy.Publisher("~joy_with_scratch", Joy, queue_size=1)
 
         # Subscriptions
         self.sub_joy_ = rospy.Subscriber("joy", Joy, self.cbJoy, queue_size=1)
@@ -36,7 +36,8 @@ class ScratchConnecter(object):
 
     def listener(self):
         while True:
-            if not self.joy: break
+            #if not self.joy: break
+            rospy.loginfo("lisening")
             data = self.scratchSock.recv(1024)
             if not data: break
             l = list(data)
