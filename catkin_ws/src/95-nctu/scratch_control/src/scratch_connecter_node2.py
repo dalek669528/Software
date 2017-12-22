@@ -36,7 +36,6 @@ class ScratchConnecter(object):
 
     def listener(self):
         while True:
-            if not self.joy: break
             rospy.loginfo("lisening")
             data = self.scratchSock.recv(1024)
             if not data: break
