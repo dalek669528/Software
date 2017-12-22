@@ -61,7 +61,7 @@ class ScratchConnecter(object):
             elif(msg_str == "broadcast \"right\""):
                 axes[3] = -1.0
                 self.state_scratch = True
-            elif(msg_str == "broadcast \"stop\""):
+            elif(msg_str == "sensor-update \"isMoving\" 0"):
                 self.state_scratch = False
 
             self.joy.axes = tuple(axes)

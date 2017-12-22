@@ -25,13 +25,13 @@
     </include>
 
     <!-- joy_mapper -->
+    <remap from="scratch_connecter_node2/joy_with_scratch" to="joy"/>
     <include file="$(find joy_mapper)/launch/joy_mapper_node.launch">
         <arg name="veh" value="$(arg veh)"/>
         <arg name="local" value="$(arg local)"/>
         <arg name="config" value="$(arg config)"/>
         <arg name="param_file_name" value="$(arg joy_mapper_param_file_name)"/>
     </include>
-
 
     <!-- run inverse_kinematics_node -->
     <remap from="inverse_kinematics_node/car_cmd" to="joy_mapper_node/car_cmd"/>
