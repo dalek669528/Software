@@ -8,11 +8,11 @@
 
 
     <include file="$(find duckietown)/machines"/>
-    <!-- scratch -->
+    <!-- joy -->
     <node ns="$(arg veh)" if="$(arg local)" pkg="joy" type="joy_node" name="scratch" output="screen">
         <rosparam command="load" file="$(find duckietown)/config/$(arg config)/joy/joy_node/$(arg param_file_name).yaml"/>
     </node>
-    <node ns="$(arg veh)" unless="$(arg local)" machine="$(arg veh)" pkg="joy" type="joy_node" name="scratch" output="screen">
+    <node ns="$(arg veh)" unless="$(arg local)" machine="$(arg veh)" pkg="joy" type="joy_node" name="joy" output="screen">
         <rosparam command="load" file="$(find duckietown)/config/$(arg config)/joy/joy_node/$(arg param_file_name).yaml"/>
     </node>
 
@@ -25,7 +25,7 @@
     </include>
 
     <!-- joy_mapper -->
-    <remap from="scratch_connecter_node2/joy_with_scratch" to="joy"/>
+    <!--remap from="scratch_connecter_node2/joy_with_scratch" to="joy"/-->
     <include file="$(find joy_mapper)/launch/joy_mapper_node.launch">
         <arg name="veh" value="$(arg veh)"/>
         <arg name="local" value="$(arg local)"/>
