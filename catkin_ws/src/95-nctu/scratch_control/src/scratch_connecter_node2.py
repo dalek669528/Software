@@ -8,7 +8,6 @@ from duckietown_msgs.msg import Twist2DStamped, BoolStamped
 
 class ScratchConnecter(object):
     def __init__(self):
-        '''
         self.node_name = rospy.get_name()
         rospy.loginfo("[%s] Initializing " %(self.node_name))
 
@@ -79,7 +78,7 @@ class ScratchConnecter(object):
         a.append(chr((n >>  8) & 0xFF))
         a.append(chr(n & 0xFF))
         self.scratchSock.send(a.tostring() + cmd)
-        '''
+
 if __name__ == '__main__':
     rospy.init_node("scratch_connecter2",anonymous=False)
     scratch_connecter = ScratchConnecter()
