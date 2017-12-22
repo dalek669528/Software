@@ -25,7 +25,7 @@
     </include>
 
     <!-- scratch_mapper -->
-    <remap from="scratch_connecter_node/joy_with_scratch" to="scratch_mapper_node/joy_with_scratch"/>
+    <remap from="scratch_mapper_node/joy_with_scratch" to="scratch_connecter_node/joy_with_scratch"/>
     <include file="$(find scratch_control)/launch/scratch_mapper_node.launch">
         <arg name="veh" value="$(arg veh)"/>
         <arg name="local" value="$(arg local)"/>
@@ -34,7 +34,7 @@
     </include>
 
     <!-- run inverse_kinematics_node -->
-    <remap from="inverse_kinematics_node/car_cmd" to="joy_mapper_node/car_cmd"/>
+    <remap from="inverse_kinematics_node/car_cmd" to="scratch_mapper_node/car_cmd"/>
     <remap from="inverse_kinematics_node/wheels_cmd" to="wheels_driver_node/wheels_cmd" />
     <include file="$(find dagu_car)/launch/inverse_kinematics_node.launch">
         <arg name="veh" value="$(arg veh)"/>
