@@ -11,7 +11,7 @@ class ScratchConnecter(object):
         self.node_name = rospy.get_name()
         rospy.loginfo("[%s] Initializing " %(self.node_name))
 
-        self.joy = Joy()
+        self.joy = None
         self.state_scratch = False
         self.port = 42001
         self.host = rospy.get_param("/scratch_IP")
@@ -36,7 +36,7 @@ class ScratchConnecter(object):
 
     def listener(self):
         while True:
-            #if not self.joy: break
+            if not self.joy: break
             rospy.loginfo("lisening")
             data = self.scratchSock.recv(1024)
             if not data: break
