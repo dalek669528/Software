@@ -49,6 +49,7 @@ class ScratchConnecter(object):
                 rospy.logerr("-E- ERROR - message length differs from sent length.  (%d vs %d)" % (msg_len, len(msg_str)))
                 
             self.pub_msg_debug.publish(msg_str)
+            '''
             if(msg_str == "broadcast \"go\""):
                 self.joy.axes[1] = 1.0
                 self.joy.axes[3] = 0.0
@@ -69,6 +70,7 @@ class ScratchConnecter(object):
                 self.joy.axes[1] = 0.0
                 self.joy.axes[3] = 0.0
                 self.state_scratch = False
+            '''
             self.pub_msg.publish(self.joy)
 
     def sendScratchCommand(self, cmd):
