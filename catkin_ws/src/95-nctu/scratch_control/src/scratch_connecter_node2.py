@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-#   2012 Jon Stephan
-#   jfstepha@gmail.com
 
 import socket
 import rospy
@@ -82,8 +80,8 @@ class ScratchConnecter(object):
         self.scratchSock.send(a.tostring() + cmd)
 
 if __name__ == '__main__':
-    rospy.init_node('scratch_connector',anonymous=False)
-    scratch_connector = ScratchConnector()
+    rospy.init_node('scratch_connecter_node2',anonymous=False)
+    scratch_connecter = ScratchConnecter()
     rospy.spin()
 
 
