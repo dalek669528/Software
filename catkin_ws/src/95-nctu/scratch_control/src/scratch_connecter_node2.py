@@ -36,9 +36,7 @@ class ScratchConnecter(object):
 
     def listener(self):
         while True:
-            rospy.loginfo("lisening")
             data = self.scratchSock.recv(1024)
-            rospy.loginfo("lisened")
             if not data: break
             l = list(data)
             msg_len = (ord(l[0]) << 24) + (ord(l[1]) << 16) + (ord(l[2]) << 8) + ord(l[3])
@@ -49,7 +47,7 @@ class ScratchConnecter(object):
                 rospy.logerr("-E- ERROR - message length differs from sent length.  (%d vs %d)" % (msg_len, len(msg_str)))
                 
             self.pub_msg_debug.publish(msg_str)
-            '''
+            
             if(msg_str == "broadcast \"go\""):
                 self.joy.axes[1] = 1.0
                 self.joy.axes[3] = 0.0
@@ -70,7 +68,7 @@ class ScratchConnecter(object):
                 self.joy.axes[1] = 0.0
                 self.joy.axes[3] = 0.0
                 self.state_scratch = False
-            '''
+            
             self.pub_msg.publish(self.joy)
 
     def sendScratchCommand(self, cmd):
