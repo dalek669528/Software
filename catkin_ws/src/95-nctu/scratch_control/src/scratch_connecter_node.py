@@ -64,6 +64,21 @@ class ScratchConnecter(object):
             elif(msg_str == "sensor-update \"isMoving\" 0"):
                 self.state_scratch = False
 
+            if(msg_str == "broadcast \"override msg True\""):
+                buttons[6] = 1
+            elif(msg_str == "broadcast \"override msg False\""):
+                buttons[7] = 1
+            elif(msg_str == "broadcast \"state verbose\""):
+                buttons[5] = 1
+            elif(msg_str == "broadcast \"state parallel autonomy\""):
+                buttons[4] = 1
+            elif(msg_str == "broadcast \"anti instagram message\""):
+                buttons[3] = 1
+            elif(msg_str == "broadcast \"E-stop message\""):
+                buttons[8] = 1
+            elif(msg_str == "broadcast \"start lane following with avoidance mode\""):
+                buttons[9] = 1
+
             self.joy.axes = tuple(axes)
             self.joy.buttons = tuple(buttons)
             self.pub_msg.publish(self.joy)
@@ -78,9 +93,6 @@ class ScratchConnecter(object):
         self.scratchSock.send(a.tostring() + cmd)
 
 if __name__ == '__main__':
-    rospy.init_node("scratch_connecter2",anonymous=False)
+    rospy.init_node("scratch_connecter",anonymous=False)
     scratch_connecter = ScratchConnecter()
     rospy.spin()
-
-
-            
