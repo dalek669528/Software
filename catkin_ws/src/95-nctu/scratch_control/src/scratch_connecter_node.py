@@ -23,10 +23,11 @@ class ScratchConnecter(object):
         # Publications
         self.pub_msg_debug = rospy.Publisher("~scratch_msg_debug", String, queue_size=10)
         self.pub_msg = rospy.Publisher("~joy_with_scratch", Joy, queue_size=1)
-
+        self.pub_vehicle_pose_pair = rospy.Publisher("~vehicle_pose_pair", PoseArray, queue_size=1)
+        
         # Subscriptions
         self.sub_joy_ = rospy.Subscriber("joy", Joy, self.cbJoy, queue_size=1)
-
+        #self.sub_vehicle_pose_pair = rospy.Subscriber("~vehicle_pose_pair", PoseArray, self.cbPoseArray, queue_size=1)
         self.listener()
 
     def cbJoy(self, joy_msg):
@@ -47,43 +48,43 @@ class ScratchConnecter(object):
                 rospy.logerr("-E- ERROR - message length differs from sent length.  (%d vs %d)" % (msg_len, len(msg_str)))
             
             #self.pub_msg_debug.publish(msg_str)
-            axes = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-            buttons = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            if(msg_str.find('broadcast')!=-1):
-                print msg_str[msg_str.find('\"')+3:msg_str.find('\"', (msg_str.find('\"')+1))]
-            if(msg_str == "broadcast \"go\""):
-                axes[1] = 1.0
-                self.state_scratch = True
-            elif(msg_str == "broadcast \"back\""):
-                axes[1] = -1.0
-                self.state_scratch = True
-            elif(msg_str == "broadcast \"left\""):
-                axes[3] = 1.0
-                self.state_scratch = True
-            elif(msg_str == "broadcast \"right\""):
-                axes[3] = -1.0
-                self.state_scratch = True
-            elif(msg_str == "sensor-update \"isMoving\" 0"):
-                self.state_scratch = False
+            if(msg_str.find('joy')!=-1):
+                axes = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+                buttons = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                msg_str = msg_str[msg_str.find('joy'):]
+                if(msg_str == "joy go\""):
+                    axes[1] = 1.0
+                    self.state_scratch = True
+                elif(msg_str == "joy back\""):
+                    axes[1] = -1.0
+                    self.state_scratch = True
+                elif(msg_str == "joy left\""):
+                    axes[3] = 1.0
+                    self.state_scratch = True
+                elif(msg_str == "joy right\""):
+                    axes[3] = -1.0
+                    self.state_scratch = True
+                elif(msg_str == "joy isMoving\" 0"):
+                    self.state_scratch = False
 
-            if(msg_str == "broadcast \"override msg True\""):
-                buttons[6] = 1
-            elif(msg_str == "broadcast \"override msg False\""):
-                buttons[7] = 1
-            elif(msg_str == "broadcast \"state verbose\""):
-                buttons[5] = 1
-            elif(msg_str == "broadcast \"state parallel autonomy\""):
-                buttons[4] = 1
-            elif(msg_str == "broadcast \"anti instagram message\""):
-                buttons[3] = 1
-            elif(msg_str == "broadcast \"E-stop message\""):
-                buttons[8] = 1
-            elif(msg_str == "broadcast \"start lane following with avoidance mode\""):
-                buttons[9] = 1
-
-            self.joy.axes = tuple(axes)
-            self.joy.buttons = tuple(buttons)
-            self.pub_msg.publish(self.joy)
+                if(msg_str == "joy override msg True\""):
+                    buttons[6] = 1
+                elif(msg_str == "joy override msg False\""):
+                    buttons[7] = 1
+                elif(msg_str == "joy state verbose\""):
+                    buttons[5] = 1
+                elif(msg_str == "joy state parallel autonomy\""):
+                    buttons[4] = 1
+                elif(msg_str == "joy anti instagram message\""):
+                    buttons[3] = 1
+                elif(msg_str == "joy E-stop message\""):
+                    buttons[8] = 1
+                elif(msg_str == "joy start lane following with avoidance mode\""):
+                    buttons[9] = 1
+                self.joy.axes = tuple(axes)
+                self.joy.buttons = tuple(buttons)
+                self.pub_msg.publish(self.joy)
+            elif():
 
     def sendScratchCommand(self, cmd):
         n = len(cmd)
