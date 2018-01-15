@@ -37,8 +37,12 @@ class ScratchConnecter(object):
 
     def listener(self):
         while True:
+            rospy.loginfo("start receive")
+            print "start receive"
             data = self.scratchSock.recv(1024)
             if not data: break
+            rospy.loginfo("received data")
+            print "received data"
             l = list(data)
             msg_len = (ord(l[0]) << 24) + (ord(l[1]) << 16) + (ord(l[2]) << 8) + ord(l[3])
             l2 = l[4:]
