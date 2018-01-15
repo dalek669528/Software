@@ -49,7 +49,7 @@ class ScratchConnecter(object):
             #self.pub_msg_debug.publish(msg_str)
             axes = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
             buttons = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            if(msg_str.find(joy)!=-1)
+            if(msg_str.find(joy)!=-1):
                 print msg_str[msg_str.find('\"')+3:msg_str.find('\"', (msg_str.find('\"')+1))]
             if(msg_str == "broadcast \"go\""):
                 axes[1] = 1.0
