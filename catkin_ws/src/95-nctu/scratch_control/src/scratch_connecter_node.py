@@ -23,7 +23,7 @@ class ScratchConnecter(object):
         # Publications
         self.pub_msg_debug = rospy.Publisher("~scratch_msg_debug", String, queue_size=10)
         self.pub_msg = rospy.Publisher("~joy_with_scratch", Joy, queue_size=1)
-        self.pub_vehicle_pose_pair = rospy.Publisher("~vehicle_pose_pair", PoseArray, queue_size=1)
+        #self.pub_vehicle_pose_pair = rospy.Publisher("~vehicle_pose_pair", PoseArray, queue_size=1)
 
         # Subscriptions
         self.sub_joy_ = rospy.Subscriber("joy", Joy, self.cbJoy, queue_size=1)
