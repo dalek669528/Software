@@ -89,15 +89,17 @@ class ScratchConnecter(object):
                 vehicle_pose = Pose()
                 self.pub_vehicle_pose_pair.publish(vehicle_pose_pair_msg)
                 if((msg_str.find('x')!=-1)):
-                    vehicle_pose.position.x = float(msg_str[msg_str.find('x'+3):])
+                    #vehicle_pose.position.x = float(msg_str[msg_str.find('x'+3):])
+                    print msg_str[msg_str.find('x'+3):]
                 if((msg_str.find('y')!=-1)):
-                    vehicle_pose.position.y = float(msg_str[msg_str.find('y'+3):])
-                vehicle_pose.position.z = 0.0
-                print "mouse X" + vehicle_pose.position.x
-                print "mouse Y" + vehicle_pose.position.y
-                print "mouse Z" + vehicle_pose.position.z
-                vehicle_pose_pair_msg.poses.append(vehicle_pose)
-                self.pub_vehicle_pose_pair.publish(vehicle_pose_pair_msg)
+                    #vehicle_pose.position.y = float(msg_str[msg_str.find('y'+3):])
+                    print msg_str[msg_str.find('y'+3):]
+                #vehicle_pose.position.z = 0.0
+                #print "mouse X" + vehicle_pose.position.x
+                #print "mouse Y" + vehicle_pose.position.y
+                #print "mouse Z" + vehicle_pose.position.z
+                #vehicle_pose_pair_msg.poses.append(vehicle_pose)
+                #self.pub_vehicle_pose_pair.publish(vehicle_pose_pair_msg)
 
     def sendScratchCommand(self, cmd):
         n = len(cmd)
