@@ -33,10 +33,9 @@ class ScratchConnecter(object):
         self.listener()
 
     def cbJoy(self, joy_msg):
-        print ("state_scratch = ", self.state_scratch)
         if not self.state_scratch:
+            #rospy.loginfo("Using Joystick")
             self.joy = joy_msg
-            rospy.loginfo("Using Joystick")
             self.pub_msg.publish(self.joy)
 
     def listener(self):
@@ -73,7 +72,6 @@ class ScratchConnecter(object):
                     self.state_scratch = True
                 elif(msg_str == "joy isMoving\" 0 "):
                     self.state_scratch = False
-                    print ("state_scratch change to ", self.state_scratch)
 
                 if(msg_str == "joy override msg True\""):
                     buttons[6] = 1
@@ -91,20 +89,20 @@ class ScratchConnecter(object):
                     buttons[9] = 1
                 self.joy.axes = tuple(axes)
                 self.joy.buttons = tuple(buttons)
-                rospy.loginfo("Using Scratch")
+                #rospy.loginfo("Using Scratch")
                 self.pub_msg.publish(self.joy)
             elif((msg_str.find('mouse ')!=-1)):
                 vehicle_pose_pair_msg = PoseArray()
                 vehicle_pose_pair_msg.header.stamp = rospy.Time.now()
                 if((msg_str.find('x')!=-1)):
-                    self.vehicle_pose.position.x = (float(msg_str[msg_str.find('x')+3:])/(-360))+0.5
+                    self.vehicle_pose.position.x = (float(msg_str[msg_str.find('x')+3:])/(-480))+0.5
                     if(self.vehicle_pose.position.x > 1.5):
                         self.vehicle_pose.position.x = 1.5
                     if(self.vehicle_pose.position.x < 0.0):
                         self.vehicle_pose.position.x = 0.0
                     self.state_vehicle_pose_x = True
                 if((msg_str.find('y')!=-1)):
-                    self.vehicle_pose.position.y = (float(msg_str[msg_str.find('y')+3:])/(-480))+0.5
+                    self.vehicle_pose.position.y = (float(msg_str[msg_str.find('y')+3:])/(-360))+0.5
                     if(self.vehicle_pose.position.y > 1.5):
                         self.vehicle_pose.position.y = 1.5
                     if(self.vehicle_pose.position.y < 0.0):
