@@ -5,7 +5,7 @@ from array import array
 from std_msgs.msg import String
 from sensor_msgs.msg import Joy
 from duckietown_msgs.msg import Twist2DStamped, BoolStamped
-
+from geometry_msgs.msg import PoseArray
 class ScratchConnecter(object):
     def __init__(self):
         self.node_name = rospy.get_name()
@@ -47,7 +47,7 @@ class ScratchConnecter(object):
             #rospy.loginfo("received %d bytes:%s" % (msg_len, msg_str))
             if(len(msg_str) != msg_len):
                 rospy.logerr("-E- ERROR - message length differs from sent length.  (%d vs %d)" % (msg_len, len(msg_str)))
-                
+
             if(msg_str.find('joy')!=-1):
                 axes = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
                 buttons = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
