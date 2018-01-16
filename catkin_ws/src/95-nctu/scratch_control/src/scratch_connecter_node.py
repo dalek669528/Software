@@ -33,7 +33,7 @@ class ScratchConnecter(object):
         self.listener()
 
     def cbJoy(self, joy_msg):
-        printf("state_scratch = ", self.state_scratch)
+        print ("state_scratch = ", self.state_scratch)
         if not self.state_scratch:
             self.joy = joy_msg
             rospy.loginfo("Using Joystick")
@@ -73,7 +73,7 @@ class ScratchConnecter(object):
                     self.state_scratch = True
                 elif(msg_str == "joy isMoving\" 0"):
                     self.state_scratch = False
-                    printf("state_scratch change to ", self.state_scratch)
+                    print ("state_scratch change to ", self.state_scratch)
 
                 if(msg_str == "joy override msg True\""):
                     buttons[6] = 1
