@@ -95,7 +95,7 @@ class ScratchConnecter(object):
                 if((msg_str.find('y')!=-1)):
                     self.vehicle_pose.position.y = float(msg_str[msg_str.find('y')+3:])
                     self.state_vehicle_pose_y = True
-                if(self.state_vehicle_pose_x and self.state_vehicle_pose_y)
+                if(self.state_vehicle_pose_x and self.state_vehicle_pose_y):
                     self.vehicle_pose.position.z = 0.0
                     vehicle_pose_pair_msg.poses.append(self.vehicle_pose)
                     self.state_vehicle_pose_x = False
