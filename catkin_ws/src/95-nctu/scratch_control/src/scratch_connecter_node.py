@@ -51,6 +51,7 @@ class ScratchConnecter(object):
             #rospy.loginfo("received %d bytes:%s" % (msg_len, msg_str))
             if(len(msg_str) != msg_len):
                 rospy.logerr("-E- ERROR - message length differs from sent length.  (%d vs %d)" % (msg_len, len(msg_str)))
+                continue
 
             if(msg_str.find('joy')!=-1):
                 self.joy.header.stamp = rospy.Time.now()
@@ -70,6 +71,7 @@ class ScratchConnecter(object):
                     axes[3] = -1.0
                     self.state_scratch = True
                 elif(msg_str == "joy isMoving\" 0"):
+                    rospy.loginfo("state_scratch = False")
                     self.state_scratch = False
 
                 if(msg_str == "joy override msg True\""):
