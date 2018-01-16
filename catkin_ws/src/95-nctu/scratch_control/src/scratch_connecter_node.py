@@ -95,16 +95,16 @@ class ScratchConnecter(object):
                 vehicle_pose_pair_msg.header.stamp = rospy.Time.now()
                 if((msg_str.find('x')!=-1)):
                     self.vehicle_pose.position.x = (float(msg_str[msg_str.find('x')+3:])/(-360))+0.5
-                    if(self.vehicle_pose.position.x > 1.5)
+                    if(self.vehicle_pose.position.x > 1.5):
                         self.vehicle_pose.position.x = 1.5
-                    if(self.vehicle_pose.position.x < 0.0)
+                    if(self.vehicle_pose.position.x < 0.0):
                         self.vehicle_pose.position.x = 0.0
                     self.state_vehicle_pose_x = True
                 if((msg_str.find('y')!=-1)):
                     self.vehicle_pose.position.y = (float(msg_str[msg_str.find('y')+3:])/(-480))+0.5
-                    if(self.vehicle_pose.position.y > 1.5)
+                    if(self.vehicle_pose.position.y > 1.5):
                         self.vehicle_pose.position.y = 1.5
-                    if(self.vehicle_pose.position.y < 0.0)
+                    if(self.vehicle_pose.position.y < 0.0):
                         self.vehicle_pose.position.y = 0.0
                     self.state_vehicle_pose_y = True
                 if(self.state_vehicle_pose_x and self.state_vehicle_pose_y):
