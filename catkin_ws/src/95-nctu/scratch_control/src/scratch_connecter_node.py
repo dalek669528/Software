@@ -12,10 +12,10 @@ class ScratchConnecter(object):
         rospy.loginfo("[%s] Initializing " %(self.node_name))
 
         self.joy = Joy()
-        self.vehicle_pose = Pose()
+        self.target_pose = Pose()
         self.state_scratch = False
-        self.state_vehicle_pose_x = False
-        self.state_vehicle_pose_y = False
+        self.state_target_pose_x = False
+        self.state_target_pose_y = False
         self.port = 42001
         self.host = rospy.get_param("/scratch_IP")
         rospy.loginfo("Connecting...")
@@ -25,11 +25,11 @@ class ScratchConnecter(object):
 
         # Publications
         self.pub_msg = rospy.Publisher("~joy_with_scratch", Joy, queue_size=1)
-        self.pub_vehicle_pose_pair = rospy.Publisher("~vehicle_pose_pair", PoseArray, queue_size=1)
+        self.pub_target_pose_pair = rospy.Publisher("~target_pose_pair", PoseArray, queue_size=1)
 
         # Subscriptions
         self.sub_joy_ = rospy.Subscriber("joy", Joy, self.cbJoy, queue_size=1)
-        #self.sub_vehicle_pose_pair = rospy.Subscriber("~vehicle_pose_pair", PoseArray, self.cbPoseArray, queue_size=1)
+        self.sub_vehicle_pose_pair = rospy.Subscriber("~vehicle_pose_pair", PoseArray, self.cbPoseArray, queue_size=1)
         self.listener()
 
     def cbJoy(self, joy_msg):
@@ -37,6 +37,12 @@ class ScratchConnecter(object):
             #rospy.loginfo("Using Joystick")
             self.joy = joy_msg
             self.pub_msg.publish(self.joy)
+
+    def cbJoy(self, pose_msg):
+        vehicle_pose_x = (pose_msg.poses.position.x-0.75)*(-320)
+        vehicle_pose_y = (pose_msg.poses.position.y-0.75)*(-240)
+        sendScratchCommand("sensor-update \"vehicle x\" " + str(vehicle_pose_x) + " \"")
+        sendScratchCommand("sensor-update \"vehicle y\" " + str(vehicle_pose_y) + " \"")
 
     def listener(self):
         while True:
@@ -92,28 +98,30 @@ class ScratchConnecter(object):
                 #rospy.loginfo("Using Scratch")
                 self.pub_msg.publish(self.joy)
             elif((msg_str.find('mouse ')!=-1)):
-                vehicle_pose_pair_msg = PoseArray()
-                vehicle_pose_pair_msg.header.stamp = rospy.Time.now()
+                target_pose_pair_msg = PoseArray()
+                target_pose_pair_msg.header.stamp = rospy.Time.now()
                 if((msg_str.find('x')!=-1)):
-                    self.vehicle_pose.position.x = (float(msg_str[msg_str.find('x')+3:])/(-480))+0.5
-                    if(self.vehicle_pose.position.x > 1.5):
-                        self.vehicle_pose.position.x = 1.5
-                    if(self.vehicle_pose.position.x < 0.0):
-                        self.vehicle_pose.position.x = 0.0
-                    self.state_vehicle_pose_x = True
+                    self.target_pose.position.x = (float(msg_str[msg_str.find('x')+3:])/(-320))+0.75
+                    if(self.target_pose.position.x > 1.5):
+                        self.target_pose.position.x = 1.5
+                    if(self.target_pose.position.x < 0.0):
+                        self.target_pose.position.x = 0.0
+                    self.state_target_pose_x = True
                 if((msg_str.find('y')!=-1)):
-                    self.vehicle_pose.position.y = (float(msg_str[msg_str.find('y')+3:])/(-360))+0.5
-                    if(self.vehicle_pose.position.y > 1.5):
-                        self.vehicle_pose.position.y = 1.5
-                    if(self.vehicle_pose.position.y < 0.0):
-                        self.vehicle_pose.position.y = 0.0
-                    self.state_vehicle_pose_y = True
-                if(self.state_vehicle_pose_x and self.state_vehicle_pose_y):
-                    self.vehicle_pose.position.z = 0.0
-                    vehicle_pose_pair_msg.poses.append(self.vehicle_pose)
-                    self.state_vehicle_pose_x = False
-                    self.state_vehicle_pose_y = False
-                    self.pub_vehicle_pose_pair.publish(vehicle_pose_pair_msg)
+                    self.target_pose.position.y = (float(msg_str[msg_str.find('y')+3:])/(-240))+0.75
+                    if(self.target_pose.position.y > 1.5):
+                        self.target_pose.position.y = 1.5
+                    if(self.target_pose.position.y < 0.0):
+                        self.target_pose.position.y = 0.0
+                    self.state_target_pose_y = True
+                if(self.state_target_pose_x and self.state_target_pose_y):
+                    self.target_pose.position.z = 0.0
+                    target_pose_pair_msg.poses.append(self.target_pose)
+                    self.state_target_pose_x = False
+                    self.state_target_pose_y = False
+                    self.pub_target_pose_pair.publish(target_pose_pair_msg)
+                    sendScratchCommand("sensor-update \"vehicle x\" " + str(self.target_pose.position.x) + " \"")
+                    sendScratchCommand("sensor-update \"vehicle y\" " + str(self.target_pose.position.y) + " \"")
 
     def sendScratchCommand(self, cmd):
         n = len(cmd)
