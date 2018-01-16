@@ -43,7 +43,7 @@ class ScratchConnecter(object):
         vehicle_pose_y = (pose_msg.poses.position.y-0.75)*(-240)
         self.sendScratchCommand("sensor-update \"vehicle x\" " + str(vehicle_pose_x) + " \"")
         self.sendScratchCommand("sensor-update \"vehicle y\" " + str(vehicle_pose_y) + " \"")
-                self.sendScratchCommand("broadcast \"set vehicle pose\"")
+        self.sendScratchCommand("broadcast \"set vehicle pose\"")
 
     def listener(self):
         while True:
