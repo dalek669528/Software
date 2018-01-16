@@ -41,8 +41,9 @@ class ScratchConnecter(object):
     def cbPoseArray(self, pose_msg):
         vehicle_pose_x = (pose_msg.poses.position.x-0.75)*(-320)
         vehicle_pose_y = (pose_msg.poses.position.y-0.75)*(-240)
-        sendScratchCommand("sensor-update \"vehicle x\" " + str(vehicle_pose_x) + " \"")
-        sendScratchCommand("sensor-update \"vehicle y\" " + str(vehicle_pose_y) + " \"")
+        self.sendScratchCommand("sensor-update \"vehicle x\" " + str(vehicle_pose_x) + " \"")
+        self.sendScratchCommand("sensor-update \"vehicle y\" " + str(vehicle_pose_y) + " \"")
+                self.sendScratchCommand("broadcast \"set vehicle pose\"")
 
     def listener(self):
         while True:
@@ -120,8 +121,11 @@ class ScratchConnecter(object):
                     self.state_target_pose_x = False
                     self.state_target_pose_y = False
                     self.pub_target_pose_pair.publish(target_pose_pair_msg)
-                    self.sendScratchCommand("sensor-update \"vehicle x\" " + str(self.target_pose.position.x) + " \"")
-                    self.sendScratchCommand("sensor-update \"vehicle y\" " + str(self.target_pose.position.y) + " \"")
+                    vehicle_pose_x = (pose_msg.poses.position.x-0.75)*(-320)
+                    vehicle_pose_y = (pose_msg.poses.position.y-0.75)*(-240)
+                    self.sendScratchCommand("sensor-update \"vehicle x\" " + str((self.target_pose.position.x-0.75)*(-320)) + " \"")
+                    self.sendScratchCommand("sensor-update \"vehicle y\" " + str((self.target_pose.position.y-0.75)*(-240)) + " \"")
+                    self.sendScratchCommand("broadcast \"set vehicle pose\"")
 
     def sendScratchCommand(self, cmd):
         n = len(cmd)
