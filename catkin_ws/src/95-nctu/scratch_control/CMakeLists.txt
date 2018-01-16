@@ -9,9 +9,11 @@ project(scratch_control)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   duckietown_msgs
+  geometry_msgs
   roscpp
   rospy
   sensor_msgs
+  std_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -71,7 +73,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   duckietown_msgs#   sensor_msgs
+#   duckietown_msgs#   geometry_msgs#   sensor_msgs#   std_msgs
 # )
 
 ################################################
@@ -106,7 +108,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES scratch_control
-#  CATKIN_DEPENDS duckietown_msgs roscpp rospy sensor_msgs
+#  CATKIN_DEPENDS duckietown_msgs geometry_msgs roscpp rospy sensor_msgs std_msgs
 #  DEPENDS system_lib
 )
 
