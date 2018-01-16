@@ -5,7 +5,7 @@ from array import array
 from std_msgs.msg import String
 from sensor_msgs.msg import Joy
 from duckietown_msgs.msg import Twist2DStamped, BoolStamped
-from geometry_msgs.msg import PoseArray
+from geometry_msgs.msg import PoseArray, Pose
 class ScratchConnecter(object):
     def __init__(self):
         self.node_name = rospy.get_name()
