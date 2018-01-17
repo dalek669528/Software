@@ -42,7 +42,7 @@ class MocapWaypointPlanningNode(object):
         # Subscription
         self.sub_vehicle_pose_pair = rospy.Subscriber("~vehicle_pose_pair", PoseArray, self.cbPoseArray, queue_size=1)
         self.sub_switch = rospy.Subscriber("~switch", BoolStamped, self.cbSwitch, queue_size=1)
-        self.sub_target_point = rospy.Subscriber("~target_pose_pair", PoseArray, self.cbTarget, queue_size)
+        self.sub_target_point = rospy.Subscriber("~target_pose_pair", PoseArray, self.cbTarget, queue_size=1)
         # safe shutdown
         rospy.on_shutdown(self.onShutdown)
 
