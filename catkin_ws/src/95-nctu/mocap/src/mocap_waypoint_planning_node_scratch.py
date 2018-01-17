@@ -62,7 +62,7 @@ class MocapWaypointPlanningNode(object):
         vehicle_yaw = self.get_yaw_two_point(self.vehicle_back_point, self.vehicle_front_point)
         print "fron point", self.vehicle_front_point.x, " , ", self.vehicle_front_point.y
         print "back point", self.vehicle_back_point.x, " , ", self.vehicle_back_point.y
-        print "target point", target_point.x, " , ", self.target_point.y
+        print "target point", target_point.x, " , ", target_point.y
 
         dist = self.get_dist_two_point(self.vehicle_front_point, target_point)
 
