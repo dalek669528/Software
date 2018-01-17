@@ -39,8 +39,8 @@ class ScratchConnecter(object):
             self.pub_msg.publish(self.joy)
 
     def cbPoseArray(self, pose_msg):
-        vehicle_pose_x = (pose_msg.poses.position.x-0.75)*(-320)
-        vehicle_pose_y = (pose_msg.poses.position.y-0.75)*(-240)
+        vehicle_pose_x = ((pose_msg.poses[0].position.x+pose_msg.poses[1].position.x)/2-0.75)*(-320)
+        vehicle_pose_y = ((pose_msg.poses[0].position.y+pose_msg.poses[1].position.y)/2-0.75)*(-240)
         self.sendScratchCommand("sensor-update \"vehicle x\" " + str(vehicle_pose_x) + " \"")
         self.sendScratchCommand("sensor-update \"vehicle y\" " + str(vehicle_pose_y) + " \"")
         self.sendScratchCommand("broadcast \"set vehicle pose\"")
