@@ -90,12 +90,13 @@ class MocapWaypointPlanningNode(object):
         else:
             self.publish_car_cmd(0, 0, 0.2)
         if(dist <= 0.08):
-            if(self.waypoint_index<3)
+            if(self.waypoint_index<3):
                 print 'Goal!!!!'
                 self.publish_car_cmd(0, 0, 2)
                 self.waypoint_index += 1
-            else 
+            else:
                 self.publish_car_cmd(0, 0, 2)
+                self.start.data = False
 
             
              
