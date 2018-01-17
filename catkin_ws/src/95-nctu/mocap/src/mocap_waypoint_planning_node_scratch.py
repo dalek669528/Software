@@ -85,7 +85,7 @@ class MocapWaypointPlanningNode(object):
         if( u > 6):
             u = 6
         print 'mega pd com: ', -u
-        self.publish_car_cmd(0.3, -u , 0.2)
+        self.publish_car_cmd(0.2, -u , 0.2)
         if(dist <= 0.08):
             if(self.waypoint_index<3):
                 print 'Goal!!!!'
