@@ -20,8 +20,8 @@ class MocapWaypointPlanningNode(object):
       
         # waypoint position
         self.waypoint_index = 0
-        self.X = [0.5, 1.5, 1.5, 0.5]
-        self.Y = [0.5, 0.5, 1.5, 1.5]
+        self.X = [0.5, 1, 1, 0.5]
+        self.Y = [0.5, 0.5, 1, 1]
         
         # vehicle point pair
         self.vehicle_yaw_pre = 0
@@ -92,7 +92,7 @@ class MocapWaypointPlanningNode(object):
         if(dist <= 0.08):
             if(self.waypoint_index<3):
                 print 'Goal!!!!'
-                #self.publish_car_cmd(0, 0, 2)
+                self.publish_car_cmd(0, 0, 1)
                 self.waypoint_index += 1
             else:
                 #self.publish_car_cmd(0, 0, 2)
