@@ -61,9 +61,11 @@ class MocapLocalizationNode(object):
         if(self.tag_detect_count != 5):
             self.tag_detect_count = 0
             self.switch.data = False
+            self.pub_switch.publish(self.switch)
             return
         else:
             self.switch.data = True
+            self.pub_switch.publish(self.switch)
         self.tag_detect_count = 0
 
         p_ct = (self.base_tag_point[0] + self.base_tag_point[1] + self.base_tag_point[2])/3
@@ -105,7 +107,6 @@ class MocapLocalizationNode(object):
             vehicle_pose.position.z = vehicle_point_pair[2,i]
             vehicle_pose_pair_msg.poses.append(vehicle_pose)
         self.pub_vehicle_pose_pair.publish(vehicle_pose_pair_msg)
-        self.pub_switch.publish(self.switch)
     def onShutdown(self):
         rospy.loginfo("[MocapLocalizationNode] Shutdown.")
 
