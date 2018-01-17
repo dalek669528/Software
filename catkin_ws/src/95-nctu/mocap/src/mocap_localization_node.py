@@ -9,7 +9,7 @@ from geometry_msgs.msg import PoseArray, Pose
 class MocapLocalizationNode(object):
     def __init__(self):
         self.node_name = "Mocap Localization" 
-
+        self.switch = BoolStamped()
         # base tag id      
         self.base_tag_id = [191, 192, 193]
         # vehicle tag id    
@@ -26,12 +26,12 @@ class MocapLocalizationNode(object):
 
         # legal or illegal localization
         self.tag_detect_count = 0
-
+        
         # Subscribers
         self.sub_tag_detections = rospy.Subscriber("~tag_detections", AprilTagDetectionArray, self.processTagDetections, queue_size=1)
         # Publishers
         self.pub_vehicle_pose_pair = rospy.Publisher("~vehicle_pose_pair", PoseArray, queue_size=1)
-
+        self.pub_switch = rospy.Publisher("~switch", BoolStamped, queue_size=1)
     def processTagDetections(self,tag_detections_msg):
         print "-----------------------------------------------"
         # assign base tag coordination
@@ -58,6 +58,7 @@ class MocapLocalizationNode(object):
                     self.tag_detect_count += 1 
         if(self.tag_detect_count != 5):
             self.tag_detect_count = 0
+            self.switch.data = False
             return
         self.tag_detect_count = 0
 
@@ -100,7 +101,7 @@ class MocapLocalizationNode(object):
             vehicle_pose.position.z = vehicle_point_pair[2,i]
             vehicle_pose_pair_msg.poses.append(vehicle_pose)
         self.pub_vehicle_pose_pair.publish(vehicle_pose_pair_msg)
-
+        self.pub_switch.publish(self.switch)
     def onShutdown(self):
         rospy.loginfo("[MocapLocalizationNode] Shutdown.")
 

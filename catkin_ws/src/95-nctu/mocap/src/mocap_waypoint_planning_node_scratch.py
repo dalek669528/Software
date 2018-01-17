@@ -17,8 +17,10 @@ class MocapWaypointPlanningNode(object):
         # start patrolling
         self.start = True
         # waypoint position
-        self.order = 0
-        self.target_point = Point()
+        self.waypoint_index = 0
+        self.X = [0, 1.5]
+        self.Y = [0, 1.5]
+        
         # vehicle point pair
         self.vehicle_yaw_pre = 0
         self.vehicle_front_point = Point()
@@ -29,14 +31,13 @@ class MocapWaypointPlanningNode(object):
         self.kd = 0.01
         self.kp = 0.03
 
-        self.switch = True
-
+        self.switch = BoolStamped()
+        
         # Publicaiton
         self.pub_car_cmd = rospy.Publisher("~car_cmd",Twist2DStamped,queue_size=1)
         # Subscription
         self.sub_vehicle_pose_pair = rospy.Subscriber("~vehicle_pose_pair", PoseArray, self.cbPoseArray, queue_size=1)
         self.sub_switch = rospy.Subscriber("~switch", BoolStamped, self.cbSwitch, queue_size=1)
-        self.sub_target_point = rospy.Subscriber("~target_point", Point,self.cbTarget_point, queue_size=1)
         # safe shutdown
         rospy.on_shutdown(self.onShutdown)
 
@@ -51,7 +52,7 @@ class MocapWaypointPlanningNode(object):
         self.vehicle_back_point = point_array_msg.poses[1].position
 
         # set target waypoint position
-
+        target_point = set_target_point
         # calculate yaw angle from vehicle to target waypoint
         target_yaw = self.get_yaw_two_point(self.vehicle_back_point, self.target_point)
 
@@ -82,27 +83,29 @@ class MocapWaypointPlanningNode(object):
         if( u > 4):
             u = 4
         print 'mega pd com: ', -u
-        if(self.switch):        
+        if(self.switch.data):        
             self.publish_car_cmd(0.2, -u , 0.2)
         else:
             self.publish_car_cmd(0, 0, 0.2)
         if(dist <= 0.08):
             print 'Goal!!!!'
-            self.start = True 
+            self.publish_car_cmd(0, 0, 2)
+             
 
     def cbSwitch(self, msg):
-        self.switch = msg.data
+        self.switch.data = msg.data
         if(msg.data):
             print "go on"
         else:
             print "stop"
-    def cbTarget_point(self, msg):
-        if(start):
-            self.target_point.x = msg.x
-            self.target_point.y = msg.y
-            seld.target_point.z = 0
-            self.order += 1
-            print "the ",self.order," point"
+    def set_target_point(self, order):
+        # set a target_point
+        print "the ",(order+1)," point"
+        target_point = Point()
+        target_point.x = self.X[order]
+        target_point.y = self.Y[order]
+        target_point.z = 0
+        return target_point
     def get_yaw_two_point(self, source_point, target_point):
         # calculate arctan(in rad) of two point
         dx = target_point.x - source_point.x
@@ -112,7 +115,7 @@ class MocapWaypointPlanningNode(object):
         #print 'dx', dx
         #print 'dy', dy
         # rad compensation
-        if self.switch == False:
+        if self.switch.data == False:
             if( dx > 0 and dy > 0):
                 yaw = yaw
             elif( dx < 0):
