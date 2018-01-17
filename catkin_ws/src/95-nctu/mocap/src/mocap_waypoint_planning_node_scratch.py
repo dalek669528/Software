@@ -49,8 +49,8 @@ class MocapWaypointPlanningNode(object):
         # timer
         rospy.loginfo("[%s] Initialized " %(rospy.get_name()))
     def cbTarget(self, target_point_msg):
-        self.target_point.x = target_point_msg.poses.position.x
-        self.target_point.y = target_point_msg.poses.position.y
+        self.target_point.x = target_point_msg.poses[0].position.x
+        self.target_point.y = target_point_msg.poses[0].position.y
         print target_point
         self.target_exist = True
     def cbPoseArray(self, point_array_msg):
