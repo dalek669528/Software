@@ -92,7 +92,7 @@ class MocapWaypointPlanningNode(object):
                 self.publish_car_cmd(0, 0, 1)
                 self.waypoint_index += 1
             else:
-                #self.publish_car_cmd(0, 0, 2)
+                self.publish_car_cmd(0, 0, 2)
                 self.start.data = False
 
             
