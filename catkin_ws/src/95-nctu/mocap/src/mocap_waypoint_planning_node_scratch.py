@@ -85,7 +85,7 @@ class MocapWaypointPlanningNode(object):
         if( u > 6):
             u = 6
         print 'mega pd com: ', -u
-        self.publish_car_cmd(0.2, -u , 0.2)
+        self.publish_car_cmd(0.2, -u , 0.4)
         if(dist <= 0.08):
             if(self.waypoint_index<3):
                 print 'Goal!!!!'
@@ -162,10 +162,10 @@ class MocapWaypointPlanningNode(object):
         self.pub_car_cmd.publish(car_cmd_msg)
         rospy.sleep(duration)
         # stop 1s
-        #car_cmd_msg.v = 0
-        #car_cmd_msg.omega = 0
-        #self.pub_car_cmd.publish(car_cmd_msg)
-        #rospy.sleep(0)      
+        car_cmd_msg.v = 0
+        car_cmd_msg.omega = 0
+        self.pub_car_cmd.publish(car_cmd_msg)
+        rospy.sleep(0)      
 
     def onShutdown(self):
         # Send stop command
