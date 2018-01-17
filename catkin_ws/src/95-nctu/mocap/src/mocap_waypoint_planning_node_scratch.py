@@ -20,8 +20,8 @@ class MocapWaypointPlanningNode(object):
       
         # waypoint position
         self.waypoint_index = 0
-        self.X = [0.5, 1, 1, 0.5]
-        self.Y = [0.5, 0.5, 1, 1]
+        self.X = [0.7, 0.6, 0.7, 0.7]
+        self.Y = [0.3, 1, 1, 0.3]
         
         # vehicle point pair
         self.vehicle_yaw_pre = 0
