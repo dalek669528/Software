@@ -60,9 +60,9 @@ class MocapWaypointPlanningNode(object):
 
         # calculate yaw angle from vehicle to previous vehicle
         vehicle_yaw = self.get_yaw_two_point(self.vehicle_back_point, self.vehicle_front_point)
-        print "fron point", self.vehicle_front_point.x
-        print "back point", self.vehicle_back_point.x
-        print "target point", target_point.x
+        print "fron point", self.vehicle_front_point.x, " , ", self.vehicle_front_point.y
+        print "back point", self.vehicle_back_point.x, " , ", self.vehicle_back_point.y
+        print "target point", target_point.x, " , ", self.target_point.y
 
         dist = self.get_dist_two_point(self.vehicle_front_point, target_point)
 
@@ -80,10 +80,10 @@ class MocapWaypointPlanningNode(object):
         self.vehicle_yaw_pre = vehicle_yaw
         u = self.kp * ess + self.kd * diff
         print 'omega pd: ', -u
-        if( u < -4):
-            u = -4
-        if( u > 4):
-            u = 4
+        if( u < -6):
+            u = -6
+        if( u > 6):
+            u = 6
         print 'mega pd com: ', -u
         if(self.switch.data):        
             self.publish_car_cmd(0.2, -u , 0.2)
@@ -92,10 +92,10 @@ class MocapWaypointPlanningNode(object):
         if(dist <= 0.08):
             if(self.waypoint_index<3):
                 print 'Goal!!!!'
-                self.publish_car_cmd(0, 0, 2)
+                #self.publish_car_cmd(0, 0, 2)
                 self.waypoint_index += 1
             else:
-                self.publish_car_cmd(0, 0, 2)
+                #self.publish_car_cmd(0, 0, 2)
                 self.start.data = False
 
             
@@ -103,7 +103,7 @@ class MocapWaypointPlanningNode(object):
 
     def cbSwitch(self, msg):
         self.switch.data = msg.data
-        if(msg.data):
+        if(self.switch.data):
             print "go on"
         else:
             print "stop"
