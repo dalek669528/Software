@@ -20,8 +20,8 @@ class MocapWaypointPlanningNode(object):
       
         # waypoint position
         self.waypoint_index = 0
-        self.X = [0, 1.5, 0, 0]
-        self.Y = [0, 1.5, 0, 0]
+        self.X = [0.5, 1.5, 1.5, 0.5]
+        self.Y = [0.5, 0.5, 1.5, 1.5]
         
         # vehicle point pair
         self.vehicle_yaw_pre = 0
@@ -54,7 +54,7 @@ class MocapWaypointPlanningNode(object):
         self.vehicle_back_point = point_array_msg.poses[1].position
 
         # set target waypoint position
-        target_point = set_target_point(self.waypoint_index)
+        target_point = self.set_target_point(self.waypoint_index)
         # calculate yaw angle from vehicle to target waypoint
         target_yaw = self.get_yaw_two_point(self.vehicle_back_point, target_point)
 
