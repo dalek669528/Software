@@ -10,7 +10,7 @@ from geometry_msgs.msg import PoseArray, Pose
 class MocapLocalizationNode(object):
     def __init__(self):
         self.node_name = "Mocap Localization" 
-        self.switch = BoolStamped()
+        self.switch = False
         # base tag id      
         self.base_tag_id = [191, 192, 193]
         # vehicle tag id    
@@ -61,6 +61,8 @@ class MocapLocalizationNode(object):
             self.tag_detect_count = 0
             self.switch.data = False
             return
+        else:
+            self.switch.data = True
         self.tag_detect_count = 0
 
         p_ct = (self.base_tag_point[0] + self.base_tag_point[1] + self.base_tag_point[2])/3
