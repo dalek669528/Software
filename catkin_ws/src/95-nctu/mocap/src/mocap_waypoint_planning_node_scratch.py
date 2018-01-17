@@ -51,7 +51,7 @@ class MocapWaypointPlanningNode(object):
     def cbTarget(self, target_point_msg):
         self.target_point.x = target_point_msg.poses[0].position.x
         self.target_point.y = target_point_msg.poses[0].position.y
-        print target_point
+        print self.target_point
         self.target_exist = True
     def cbPoseArray(self, point_array_msg):
         if not(self.start):
