@@ -18,8 +18,8 @@ class MocapWaypointPlanningNode(object):
         self.start = True
         # waypoint position
         self.waypoint_index = 0
-        self.X = [0, 1.5]
-        self.Y = [0, 1.5]
+        self.X = [0.5, 0]
+        self.Y = [0, 0]
 
         # vehicle point pair
         self.vehicle_yaw_pre = 0
@@ -76,7 +76,7 @@ class MocapWaypointPlanningNode(object):
         if( u > 7):
             u = 7
         print 'mega pd com: ', -u
-        self.publish_car_cmd(0.3, -u , 0.2)
+        self.publish_car_cmd(0.15, -u , 0.2)
 
     def set_target_point(self, order):
         # set a target_point
