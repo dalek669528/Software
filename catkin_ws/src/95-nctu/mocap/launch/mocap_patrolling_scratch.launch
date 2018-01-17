@@ -33,6 +33,7 @@
 
         <!-- Waypoint Planning -->
     <remap from="mocap_waypoint_planning_node/vehicle_pose_pair" to="mocap_localization_node/vehicle_pose_pair"/>
+    <remap from="mocap_waypoint_planning_node/switch" to="mocap_localization_node/switch"/>
         <include file="$(find mocap)/launch/mocap_waypoint_planning_node_scratch.launch">
             <arg name="veh" value="$(arg veh)"/>
             <arg name="local" value="$(arg local)"/>
