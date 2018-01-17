@@ -103,17 +103,17 @@ class ScratchConnecter(object):
                 target_pose_pair_msg.header.stamp = rospy.Time.now()
                 if((msg_str.find('x')!=-1)):
                     self.target_pose.position.x = (float(msg_str[msg_str.find('x')+3:])/(-320))+0.75
-                    if(self.target_pose.position.x > 1.5):
-                        self.target_pose.position.x = 1.5
-                    if(self.target_pose.position.x < 0.0):
-                        self.target_pose.position.x = 0.0
+                    if(self.target_pose.position.x > 1.25):
+                        self.target_pose.position.x = 1.25
+                    if(self.target_pose.position.x < 0.25):
+                        self.target_pose.position.x = 0.25
                     self.state_target_pose_x = True
                 if((msg_str.find('y')!=-1)):
                     self.target_pose.position.y = (float(msg_str[msg_str.find('y')+3:])/(-240))+0.75
-                    if(self.target_pose.position.y > 1.5):
-                        self.target_pose.position.y = 1.5
-                    if(self.target_pose.position.y < 0.0):
-                        self.target_pose.position.y = 0.0
+                    if(self.target_pose.position.y > 1.25):
+                        self.target_pose.position.y = 1.25
+                    if(self.target_pose.position.y < 0.25):
+                        self.target_pose.position.y = 0.25
                     self.state_target_pose_y = True
                 if(self.state_target_pose_x and self.state_target_pose_y):
                     self.target_pose.position.z = 0.0
@@ -121,9 +121,9 @@ class ScratchConnecter(object):
                     self.state_target_pose_x = False
                     self.state_target_pose_y = False
                     self.pub_target_pose_pair.publish(target_pose_pair_msg)
-                    self.sendScratchCommand("sensor-update \"vehicle x\" " + str((self.target_pose.position.x-0.75)*(-320)) + " \"")
-                    self.sendScratchCommand("sensor-update \"vehicle y\" " + str((self.target_pose.position.y-0.75)*(-240)) + " \"")
-                    self.sendScratchCommand("broadcast \"set vehicle pose\"")
+                    #self.sendScratchCommand("sensor-update \"vehicle x\" " + str((self.target_pose.position.x-0.75)*(-320)) + " \"")
+                    #self.sendScratchCommand("sensor-update \"vehicle y\" " + str((self.target_pose.position.y-0.75)*(-240)) + " \"")
+                    #self.sendScratchCommand("broadcast \"set vehicle pose\"")
 
     def sendScratchCommand(self, cmd):
         n = len(cmd)

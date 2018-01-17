@@ -1,6 +1,7 @@
 <launch>
     <arg name="veh"/>
     <arg name="local" default="false" doc="true for running everything you possibly can on laptop. false for everything running on vehicle."/>
+    <arg name="scratch_IP" default="localhost" doc="IP address of computer which scratch is running."/>
     <arg name="config" default="baseline" doc="Specify a config."/>
     <arg name="param_file_name" default="default" doc="Specify a param file. ex:megaman." />
     <arg name="camera" default="false" doc="camera set to false means only apriltags no camera nodes are launched"/>
@@ -32,8 +33,8 @@
         </include>
 
         <!-- Waypoint Planning -->
-    <remap from="mocap_waypoint_planning_node/vehicle_pose_pair" to="mocap_localization_node/vehicle_pose_pair"/>
-    <remap from="mocap_waypoint_planning_node/switch" to="mocap_localization_node/switch"/>
+        <remap from="mocap_waypoint_planning_node/vehicle_pose_pair" to="mocap_localization_node/vehicle_pose_pair"/>
+        <remap from="mocap_waypoint_planning_node/switch" to="mocap_localization_node/switch"/>
         <include file="$(find mocap)/launch/mocap_waypoint_planning_node_scratch.launch">
             <arg name="veh" value="$(arg veh)"/>
             <arg name="local" value="$(arg local)"/>
@@ -44,6 +45,17 @@
 
 
     <group if="$(arg laptop)">
+
+        <!-- scratch_connecter -->
+        <remap from="scratch_connecter_node/vehicle_pose_pair" to="mocap_localization_node/vehicle_pose_pair"/>
+        <remap from="scratch_connecter_node/target_pose_pair" to="mocap_waypoint_planning_node/target_pose_pair"/>
+        <include file="$(find scratch_control)/launch/scratch_connecter_node.launch">
+            <arg name="veh" value="$(arg veh)"/>
+            <arg name="scratch_IP" value="$(arg scratch_IP)"/>
+            <arg name="local" value="$(arg local)"/>
+            <arg name="config" value="$(arg config)"/>
+        </include>
+
         <!-- decoder_node -->
         <remap from="decoder_node/compressed_image" to="camera_node/image/compressed"/>
         <remap from="decoder_node/image/raw" to="camera_node/image/raw"/>
