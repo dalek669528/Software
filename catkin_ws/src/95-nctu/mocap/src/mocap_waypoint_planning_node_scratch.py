@@ -17,8 +17,10 @@ class MocapWaypointPlanningNode(object):
 
         # start patrolling
         self.start = True
-      
+        self.target_point = Point()
+        self.target_exist = False
         # waypoint position
+
         self.waypoint_index = 0
         self.X = [0.7, 0.6, 0.7, 0.7]
         self.Y = [0.3, 1, 1, 0.3]
@@ -40,12 +42,17 @@ class MocapWaypointPlanningNode(object):
         # Subscription
         self.sub_vehicle_pose_pair = rospy.Subscriber("~vehicle_pose_pair", PoseArray, self.cbPoseArray, queue_size=1)
         self.sub_switch = rospy.Subscriber("~switch", BoolStamped, self.cbSwitch, queue_size=1)
+        self.sub_target_point = rospy.Subscriber("~target_pose_pair", PoseArray, self.cbTarget, queue_size)
         # safe shutdown
         rospy.on_shutdown(self.onShutdown)
 
         # timer
         rospy.loginfo("[%s] Initialized " %(rospy.get_name()))
-
+    def cbTarget(self, target_point_msg):
+        self.target_point.x = target_point_msg.poses.position.x
+        self.target_point.y = target_point_msg.poses.position.y
+        print target_point
+        self.target_exist = True
     def cbPoseArray(self, point_array_msg):
         if not(self.start):
             return
@@ -54,17 +61,18 @@ class MocapWaypointPlanningNode(object):
         self.vehicle_back_point = point_array_msg.poses[1].position
 
         # set target waypoint position
-        target_point = self.set_target_point(self.waypoint_index)
+        if not(target_exist)
+            self.set_target_point(self.waypoint_index)
         # calculate yaw angle from vehicle to target waypoint
-        target_yaw = self.get_yaw_two_point(self.vehicle_back_point, target_point)
+        target_yaw = self.get_yaw_two_point(self.vehicle_back_point, self.target_point)
 
         # calculate yaw angle from vehicle to previous vehicle
         vehicle_yaw = self.get_yaw_two_point(self.vehicle_back_point, self.vehicle_front_point)
         print "fron point", self.vehicle_front_point.x, " , ", self.vehicle_front_point.y
         print "back point", self.vehicle_back_point.x, " , ", self.vehicle_back_point.y
-        print "target point", target_point.x, " , ", target_point.y
+        print "target point", self.target_point.x, " , ", self.target_point.y
 
-        dist = self.get_dist_two_point(self.vehicle_front_point, target_point)
+        dist = self.get_dist_two_point(self.vehicle_front_point, self.target_point)
 
         if(target_yaw >= 180):
             target_taw = 360 - target_yaw
@@ -91,6 +99,7 @@ class MocapWaypointPlanningNode(object):
                 print 'Goal!!!!'
                 self.publish_car_cmd(0, 0, 1)
                 self.waypoint_index += 1
+                self.target_exist = False
             else:
                 self.publish_car_cmd(0, 0, 2)
                 self.start.data = False
@@ -108,15 +117,12 @@ class MocapWaypointPlanningNode(object):
     def set_target_point(self, order):
         # set a target_point
         print "the ",(order+1)," point"
-        target_point = Point()
-        target_point.x = self.X[order]
-        target_point.y = self.Y[order]
-        target_point.z = 0
-        return target_point
-    def get_yaw_two_point(self, source_point, target_point):
+        self.target_point.x = self.X[order]
+        self.target_point.y = self.Y[order]
+    def get_yaw_two_point(self, source_point, point):
         # calculate arctan(in rad) of two point
-        dx = target_point.x - source_point.x
-        dy = target_point.y - source_point.y
+        dx = point.x - source_point.x
+        dy = point.y - source_point.y
         yaw = math.atan(dy/dx) * 180/math.pi
         #print 'original yaw', yaw
         #print 'dx', dx
@@ -144,9 +150,9 @@ class MocapWaypointPlanningNode(object):
                 yaw = -90 
         return yaw
 
-    def get_dist_two_point(self, source_point, target_point):
-        dx = target_point.x - source_point.x
-        dy = target_point.y - source_point.y
+    def get_dist_two_point(self, source_point, point):
+        dx = point.x - source_point.x
+        dy = point.y - source_point.y
         dist = math.sqrt(dx * dx + dy * dy)
         return dist 
     def set_pre_vehicle_point(self, point):
