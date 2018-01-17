@@ -16,10 +16,11 @@ class MocapWaypointPlanningNode(object):
 
         # start patrolling
         self.start = True
+      
         # waypoint position
         self.waypoint_index = 0
-        self.X = [0, 1.5]
-        self.Y = [0, 1.5]
+        self.X = [0, 1.5, 0, 0]
+        self.Y = [0, 1.5, 0, 0]
         
         # vehicle point pair
         self.vehicle_yaw_pre = 0
@@ -52,17 +53,17 @@ class MocapWaypointPlanningNode(object):
         self.vehicle_back_point = point_array_msg.poses[1].position
 
         # set target waypoint position
-        target_point = set_target_point
+        target_point = set_target_point(self.waypoint_index)
         # calculate yaw angle from vehicle to target waypoint
-        target_yaw = self.get_yaw_two_point(self.vehicle_back_point, self.target_point)
+        target_yaw = self.get_yaw_two_point(self.vehicle_back_point, target_point)
 
         # calculate yaw angle from vehicle to previous vehicle
         vehicle_yaw = self.get_yaw_two_point(self.vehicle_back_point, self.vehicle_front_point)
         print "fron point", self.vehicle_front_point.x
         print "back point", self.vehicle_back_point.x
-        print "target point", self.target_point.x
+        print "target point", target_point.x
 
-        dist = self.get_dist_two_point(self.vehicle_front_point, self.target_point)
+        dist = self.get_dist_two_point(self.vehicle_front_point, target_point)
 
         if(target_yaw >= 180):
             target_taw = 360 - target_yaw
@@ -88,8 +89,14 @@ class MocapWaypointPlanningNode(object):
         else:
             self.publish_car_cmd(0, 0, 0.2)
         if(dist <= 0.08):
-            print 'Goal!!!!'
-            self.publish_car_cmd(0, 0, 2)
+            if(self.waypoint_index<3)
+                print 'Goal!!!!'
+                self.publish_car_cmd(0, 0, 2)
+                self.waypoint_index += 1
+            else 
+                self.publish_car_cmd(0, 0, 2)
+
+            
              
 
     def cbSwitch(self, msg):
