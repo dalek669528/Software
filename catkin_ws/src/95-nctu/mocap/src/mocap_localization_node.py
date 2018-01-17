@@ -2,8 +2,9 @@
 import rospy
 import numpy as np
 import scipy as sp
-from duckietown_msgs.msg import AprilTagDetection, AprilTagDetectionArray
+from duckietown_msgs.msg import AprilTagDetection, AprilTagDetectionArray, BoolStamped
 from geometry_msgs.msg import PoseArray, Pose
+
 
 
 class MocapLocalizationNode(object):

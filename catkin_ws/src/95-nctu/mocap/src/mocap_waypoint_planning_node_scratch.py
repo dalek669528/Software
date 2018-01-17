@@ -10,6 +10,7 @@ import sys
 import time
 import threading
 
+
 class MocapWaypointPlanningNode(object):
     def __init__(self):
         self.node_name = rospy.get_name()
