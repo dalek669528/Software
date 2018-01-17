@@ -32,7 +32,7 @@ class MocapWaypointPlanningNode(object):
         # the previous vehicle point of last moment
         #self.pre_vehicle_point = Point()
 
-        self.kd = 0.02
+        self.kd = 0.01
         self.kp = 0.05
 
         self.switch = BoolStamped()
@@ -93,7 +93,10 @@ class MocapWaypointPlanningNode(object):
         if( u > 6):
             u = 6
         print 'mega pd com: ', -u
-        self.publish_car_cmd(0.2, -u , 0.4)
+        if(u>2 or u<-2):
+            self.publish_car_cmd(0.0, -u , 0.5)
+        else:
+            self.publish_car_cmd(0.3, -u , 0.5)
         if(dist <= 0.08):
             if(self.waypoint_index<3):
                 print 'Goal!!!!'
@@ -102,7 +105,7 @@ class MocapWaypointPlanningNode(object):
                 self.target_exist = False
             else:
                 self.publish_car_cmd(0, 0, 2)
-                self.start.data = False
+                self.start = False
 
             
              
